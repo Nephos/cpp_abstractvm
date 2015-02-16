@@ -1,33 +1,31 @@
-##
-## Makefile for  in /home/poulet_a/rendu/cpp_abstractvm
-##
-## Made by Arthur Poulet
-## Login   <poulet_a@epitech.net>
-##
-## Started on  Mon Feb  9 16:59:39 2015 Arthur Poulet
-## Last update Mon Feb  9 17:03:02 2015 Arthur Poulet
-##
+NAME		= 	avm
 
-RM	=	rm -f
+SRC		=  	main.cpp
 
-CFLAGS  +=      -Wall -Wextra -Werror
+OBJ		=	$(SRC:.cpp=.o)
 
-NAME	=	avm
+CFLAGS		+= 	-W -Wall -Werror
 
-SRCS	=	main.cpp
+RM		= 	rm -f
 
-OBJS	=	$(SRCS:.cpp=.o)
+CC		= 	g++
+
+%.o: %.c
+		@printf "[\033[0;32mdone\033[0m] % 33s\n" $<
+		@$(CC) -c -o $@ $< $(CFLAGS)
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS)
-		g++ $(SRCS) $(CFLAGS) -o $(NAME)
+$(NAME):	$(OBJ)
+		@$(CC) $(OBJ) -o $(NAME)
 
 clean:
-		$(RM) $(OBJS)
+		@printf "[\033[0;31mdeleted\033[0m] % 30s\n" $(OBJ)
+		@$(RM) $(OBJ)
 
 fclean:		clean
-		$(RM) $(NAME)
+		@$(RM) $(NAME)
+		@printf "[\033[0;31mdeleted\033[0m] % 30s\n" $(NAME)
 
 re:		fclean all
 
