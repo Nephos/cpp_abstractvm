@@ -13,14 +13,15 @@ public:
     std::stringstream s;
     s << string;
     s >> _value;
-    std::cout << "A The operand " << _value << std::endl;
+    std::cout << "1. The operand " << _string << std::endl;
   }
 
-  Operand(const T & value, const eOperandType type) : _value(value), _type(type) {
+  Operand(const double & value, const eOperandType type) : _value(value), _type(type) {
     std::stringstream s;
     s << value;
     _string = s.str();
-    std::cout << "B The operand " << _value << std::endl;
+    std::cout << "T> " << value << std::endl;
+    std::cout << "2. The operand " << _string << std::endl;
   }
 
   virtual ~Operand() {}
@@ -40,7 +41,7 @@ public:
   template <typename U>
   static const U getValue(const IOperand &op) {
     std::stringstream s;
-    U v;
+    double v;
     s << op.toString();
     s >> v;
     return v;
@@ -71,7 +72,7 @@ private:
   Operand &operator=(const Operand &);
 
 protected:
-  T		_value;
+  T	_value;
   eOperandType	_type;
   std::string	_string;
 
