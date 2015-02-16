@@ -9,10 +9,18 @@ template <typename T>
 class Operand : public IOperand
 {
 public:
-  Operand(const T &value, const eOperandType type) : _value(value), _type(type) {
+  Operand(const std::string & string, const eOperandType type) : _string(string), _type(type) {
+    std::stringstream s;
+    s << string;
+    s >> _value;
+    std::cout << "A The operand " << _value << std::endl;
+  }
+
+  Operand(const T & value, const eOperandType type) : _value(value), _type(type) {
     std::stringstream s;
     s << value;
     _string = s.str();
+    std::cout << "B The operand " << _value << std::endl;
   }
 
   virtual ~Operand() {}
