@@ -9,10 +9,11 @@ template <typename T>
 class Operand : public IOperand
 {
 public:
-  enum eOperandType {Int8, Int16, Int32, Float, Double};
-
-  Operand(const T &rhs) {
-    _v = rhs;
+  Operand(const T &value) : _v(value) {
+    if (dynamic_cast<float *>(&value))
+      _type = Float;
+    else
+      _type = sizeof(value);
   }
 
   virtual ~Operand() {}
@@ -23,33 +24,34 @@ public:
   }
 
   virtual int getPrecision() const {
-    return sizeof(_v);
+    // return sizeof(_v);
+    return static_cast<int>(getType());
   }
 
   virtual eOperandType getType() const {
     // todo
   }
 
-  virtual T * operator+(const T &rhs) const {
-    return new T(_v + rhs._v);
+  virtual IOperand * operator+(const T &rhs) const {
+    return new Operand<T>(_v + rhs._v);
   }
 
-  virtual T * operator-(const T &rhs) const {
-    return new T(_v - rhs._v);
+  virtual IOperand * operator-(const T &rhs) const {
+    return new Operand<T>(_v - rhs._v);
   }
 
-  virtual T * operator*(const T &rhs) const {
-    return new T(_v * rhs._v);
+  virtual IOperand * operator*(const T &rhs) const {
+    return new Operand<T>(_v * rhs._v);
   }
 
-  virtual T * operator/(const T &rhs) const {
+  virtual IOperand * operator/(const T &rhs) const {
     //raise on rhs._v == 0
-    return new T(_v / rhs._v);
+    return new Operand<T>(_v / rhs._v);
   }
 
-  virtual T * operator%(const T &rhs) const {
+  virtual IOperand * operator%(const T &rhs) const {
     //raise on rhs._v == 0
-    return new T(_v % rhs._v);
+    return new Operand<T>(_v % rhs._v);
   }
 
 private:
@@ -58,6 +60,7 @@ private:
 
 protected:
   T	_v;
+  int	_type;
 
 };
 

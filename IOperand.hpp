@@ -1,6 +1,10 @@
 #ifndef IOPERAND_H_
 # define IOPERAND_H_
 
+# include <string>
+
+enum eOperandType {Int8 = 1, Int16 = 2, Int32 = 4, Float = 5, Double = 8};
+
 class IOperand
 {
 public:
@@ -13,6 +17,7 @@ public:
   virtual IOperand * operator*(const IOperand &rhs) const = 0;
   virtual IOperand * operator/(const IOperand &rhs) const = 0;
   virtual IOperand * operator%(const IOperand &rhs) const = 0;
+
   virtual ~IOperand() {}
 };
 
