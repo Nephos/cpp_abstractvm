@@ -48,7 +48,7 @@ public:
     return v;
   }
 
-  static IOperand * const cloneWithType(const IOperand & op, const eOperandType type) {
+  static IOperand * cloneWithType(const IOperand & op, const eOperandType type) {
     switch (type)
       {
       case Int8:
@@ -110,6 +110,12 @@ public:
 
   virtual IOperand * operator%(const IOperand &rhs) const {
     //raise on rhs._value == 0
+    if (rhs.getType() == Float || rhs.getType() == Double ||
+	this->getType() == Float || this->getType() == Double)
+      {
+	// error
+	return NULL;
+      }
     if (rhs.getPrecision() > getPrecision())
       {
 	IOperand *tmp = cloneWithType(*this, rhs.getType());
@@ -117,7 +123,7 @@ public:
 	delete tmp;
 	return result;
       }
-    return new Operand<T>(getValue<T>(*this) % getValue<T>(rhs), _type);
+    return new Operand<T>(static_cast<int>(getValue<T>(*this)) % static_cast<int>(getValue<T>(rhs)), _type);
   }
 
   Operand(const Operand & orig) : _value(orig._value), _type(orig._type), _string(orig._string) {
