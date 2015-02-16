@@ -9,7 +9,7 @@ template <typename T>
 class Operand : public IOperand
 {
 public:
-  Operand(const std::string & string, const eOperandType type) : _string(string), _type(type) {
+  Operand(const std::string & string, const eOperandType type) : _type(type), _string(string) {
     std::stringstream s;
     s << string;
     s >> _value;
@@ -72,7 +72,7 @@ private:
   Operand &operator=(const Operand &);
 
 protected:
-  T	_value;
+  T		_value;
   eOperandType	_type;
   std::string	_string;
 
