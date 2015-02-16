@@ -3,7 +3,7 @@
 
 # include <string>
 
-enum eOperandType {Int8 = 1, Int16 = 2, Int32 = 4, Float = 5, Double = 8};
+enum eOperandType {Int8, Int16, Int32, Float, Double};
 
 class IOperand
 {

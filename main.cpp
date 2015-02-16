@@ -3,5 +3,5 @@
 
 int	main()
 {
-  Operand	*toto = new Operand<char>(0);
+  IOperand	*toto = new Operand<char>(0, Int8);
 }
