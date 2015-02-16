@@ -4,7 +4,7 @@ SRC		=  	main.cpp
 
 OBJ		=	$(SRC:.cpp=.o)
 
-CFLAGS		+= 	-W -Wall -Werror
+CXXFLAGS	+= 	-W -Wall -Wextra
 
 RM		= 	rm -f
 
