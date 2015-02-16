@@ -89,6 +89,9 @@ public:
   }
 
   virtual IOperand * operator*(const IOperand &rhs) const {
+    if (rhs.getPrecision() > getPrecision())
+      return (rhs * *this);
+    return new Operand<T>(getValue<T>(*this) * getValue<T>(rhs), _type);
   }
 
   virtual IOperand * operator/(const IOperand &rhs) const {
