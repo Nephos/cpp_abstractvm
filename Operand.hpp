@@ -31,6 +31,7 @@ public:
   }
 
   virtual int getPrecision() const {
+    // reinterpret_cast ??
     return static_cast<int>(getType());
   }
 
@@ -69,6 +70,7 @@ public:
 	// throw error
 	break;
       }
+    return NULL;
   }
 
   virtual IOperand * operator+(const IOperand &rhs) const {
@@ -96,10 +98,26 @@ public:
 
   virtual IOperand * operator/(const IOperand &rhs) const {
     //raise on rhs._value == 0
+    if (rhs.getPrecision() > getPrecision())
+      {
+	IOperand *tmp = cloneWithType(*this, rhs.getType());
+	IOperand *result = *tmp / rhs;
+	delete tmp;
+	return result;
+      }
+    return new Operand<T>(getValue<T>(*this) / getValue<T>(rhs), _type);
   }
 
   virtual IOperand * operator%(const IOperand &rhs) const {
     //raise on rhs._value == 0
+    if (rhs.getPrecision() > getPrecision())
+      {
+	IOperand *tmp = cloneWithType(*this, rhs.getType());
+	IOperand *result = *tmp % rhs;
+	delete tmp;
+	return result;
+      }
+    return new Operand<T>(getValue<T>(*this) % getValue<T>(rhs), _type);
   }
 
   Operand(const Operand & orig) : _value(orig._value), _type(orig._type), _string(orig._string) {
