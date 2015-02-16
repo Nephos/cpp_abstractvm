@@ -47,6 +47,30 @@ public:
     return v;
   }
 
+  static IOperand * const cloneWithType(const IOperand & op, const eOperandType type) {
+    switch (type)
+      {
+      case Int8:
+	return new Operand<char>(op.toString(), Int8);
+	break;
+      case Int16:
+	return new Operand<short>(op.toString(), Int16);
+	break;
+      case Int32:
+	return new Operand<int>(op.toString(), Int32);
+	break;
+      case Float:
+	return new Operand<float>(op.toString(), Float);
+	break;
+      case Double:
+	return new Operand<double>(op.toString(), Double);
+	break;
+      default:
+	// throw error
+	break;
+      }
+  }
+
   virtual IOperand * operator+(const IOperand &rhs) const {
     if (rhs.getPrecision() > getPrecision())
       return (rhs + *this);
@@ -54,6 +78,14 @@ public:
   }
 
   virtual IOperand * operator-(const IOperand &rhs) const {
+    if (rhs.getPrecision() > getPrecision())
+      {
+	IOperand *tmp = cloneWithType(*this, rhs.getType());
+	IOperand *result = *tmp - rhs;
+	delete tmp;
+	return result;
+      }
+    return new Operand<T>(getValue<T>(*this) - getValue<T>(rhs), _type);
   }
 
   virtual IOperand * operator*(const IOperand &rhs) const {
@@ -67,9 +99,8 @@ public:
     //raise on rhs._value == 0
   }
 
-private:
-  Operand(const Operand &);
-  Operand &operator=(const Operand &);
+  Operand(const Operand & orig) : _value(orig._value), _type(orig._type), _string(orig._string) {
+  }
 
 protected:
   T		_value;
