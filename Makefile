@@ -1,6 +1,7 @@
 NAME		= 	avm
 
-SRC		=  	main.cpp
+SRC		=  	main.cpp \
+			Exceptions.cpp
 
 OBJ		=	$(SRC:.cpp=.o)
 
