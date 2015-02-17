@@ -28,35 +28,88 @@ void            VirtualCPU::push(IOperand *elem) {
 }
 
 void            VirtualCPU::assert(IOperand *elem) {
-
+  // Changer le throw avec une xception
+  if (elem->toString() != _mutantStack->top()->toString())
+    throw 1;
 }
 
 void            VirtualCPU::pop() {
+  // Throw error if stack is empty
   _mutantStack->pop();
 }
 
 void            VirtualCPU::dump() {
+  // MutantStack<IOperand *>::iterator *it(&_mutantStack->begin());
+  // MutantStack<IOperand *>::iterator *itend(&_mutantStack->end());
+
+  // while (it != itend) {
+  //   std::cout << it->toString() << std::endl;
+  //   ++it;
+  // }
+  
 }
 
 void            VirtualCPU::add() {
+  // Throw if stack size < 2 
+  IOperand *first = _mutantStack->top();
+  _mutantStack->pop();
+  IOperand *second = _mutantStack->top();
+  _mutantStack->pop();
+  _mutantStack->push(*first + *second);
 }
 
 void            VirtualCPU::sub() {
+  // Throw if stack size < 2 
+  IOperand *first = _mutantStack->top();
+  _mutantStack->pop();
+  IOperand *second = _mutantStack->top();
+  _mutantStack->pop();
+  _mutantStack->push(*first - *second);
 }
 
 void            VirtualCPU::mul() {
+  // Throw if stack size < 2 
+  IOperand *first = _mutantStack->top();
+  _mutantStack->pop();
+  IOperand *second = _mutantStack->top();
+  _mutantStack->pop();
+  _mutantStack->push(*first * *second);
 }
 
 void            VirtualCPU::div() {
+  // Throw if stack size < 2
+  // Throw if divisor is 0
+  IOperand *first = _mutantStack->top();
+  _mutantStack->pop();
+  IOperand *second = _mutantStack->top();
+  _mutantStack->pop();
+  _mutantStack->push(*first / *second);
 }
 
 void            VirtualCPU::mod() {
+  // Throw if stack size < 2
+  // Throw if divisor is 0
+  IOperand *first = _mutantStack->top();
+  _mutantStack->pop();
+  IOperand *second = _mutantStack->top();
+  _mutantStack->pop();
+  _mutantStack->push(*first % *second);
 }
 
 void            VirtualCPU::print() {
+  // Changer le Throw
+  if (_mutantStack->top()->getType() != Int8)
+    throw 1;
+  std::stringstream ss;
+  ss << _mutantStack->top();
+  std::cout << ss.str() << std::endl;
 }
 
 void            VirtualCPU::exit() {
+}
+
+void		VirtualCPU::executeInstruction(const std::string & instruction, const std::string) {
+  
 }
 
 IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value) {
