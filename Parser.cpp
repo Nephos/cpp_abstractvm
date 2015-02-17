@@ -1,6 +1,6 @@
 #include "Parser.hpp"
 
-Parser::Parser() {
+Parser::Parser(const VirtualCPU * cpu) : _cpu(cpu) {
   _instructions["push"] =	1;
   _instructions["pop"] =	0;
   _instructions["dump"] =	0;

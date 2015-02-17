@@ -8,7 +8,7 @@
 
 class VirtualCPU {
 public:
-  VirtualCPU();
+  VirtualCPU(const MutantStack<IOperand *> *);
   ~VirtualCPU();
 
   void          push(IOperand *);

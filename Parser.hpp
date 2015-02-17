@@ -7,6 +7,7 @@
 # include <map>
 # include <vector>
 
+# include "VirtualCPU.hpp"
 # include "IOperand.hpp"
 # include "Exceptions.hpp"
 
@@ -18,10 +19,11 @@ typedef unsigned int nb_arguments;
 class Parser
 {
 public:
-  Parser();
+  Parser(const VirtualCPU *);
   ~Parser();
   Parser(const Parser &);
   Parser& operator=(const Parser &);
+
 
   void		parse();
   void		initIO(const std::string &);
@@ -31,6 +33,7 @@ public:
 private:
   IOperand *createOperand(eOperandType, const std::string &);
   std::istream *_is;
+  const VirtualCPU *_cpu;
 
   std::map<std::string, nb_arguments> _instructions;
   std::map<std::string, eArgumentType> _arguments;
