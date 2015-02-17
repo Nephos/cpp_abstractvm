@@ -13,15 +13,12 @@ public:
     std::stringstream s;
     s << string;
     s >> _value;
-    std::cout << "1. The operand " << _string << std::endl;
   }
 
   Operand(const double & value, const eOperandType type) : _value(value), _type(type) {
     std::stringstream s;
     s << value;
     _string = s.str();
-    std::cout << "T> " << value << std::endl;
-    std::cout << "2. The operand " << _string << std::endl;
   }
 
   virtual ~Operand() {}
@@ -31,7 +28,6 @@ public:
   }
 
   virtual int getPrecision() const {
-    // reinterpret_cast ??
     return static_cast<int>(getType());
   }
 
@@ -52,19 +48,19 @@ public:
     switch (type)
       {
       case Int8:
-	return new Operand<char>(op.toString(), Int8);
+	return new Operand<INT8>(op.toString(), Int8);
 	break;
       case Int16:
-	return new Operand<short>(op.toString(), Int16);
+	return new Operand<INT16>(op.toString(), Int16);
 	break;
       case Int32:
-	return new Operand<int>(op.toString(), Int32);
+	return new Operand<INT32>(op.toString(), Int32);
 	break;
       case Float:
-	return new Operand<float>(op.toString(), Float);
+	return new Operand<FLOAT>(op.toString(), Float);
 	break;
       case Double:
-	return new Operand<double>(op.toString(), Double);
+	return new Operand<DOUBLE>(op.toString(), Double);
 	break;
       default:
 	// throw error
