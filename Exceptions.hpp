@@ -9,7 +9,7 @@ class VMException : public std::exception
 public:
   VMException(std::string str);
   virtual ~VMException() throw() { }
-  virtual const char *what() const throw();
+  const char *what() const throw();
 
 protected:
   std::string _str;
