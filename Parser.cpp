@@ -107,14 +107,44 @@ void		Parser::initIO() {
   _is = &std::cin;
 }
 
-void			Parser::executeInstruction(const std::string & instruction)
+void			Parser::executeInstruction(const std::string & line)
 {
   std::stringstream	s;
-  std::map<std::string, unsigned int>::iterator it;
+  std::string		instruct;
+  std::map<std::string, nb_arguments>::iterator iti;
+  std::map<std::string, eArgumentType>::iterator ita;
+  IOperand		*arg;
 
-  s << instruction;
-  it = _instructions.find(s.str());
-  if (it == _instructions.end())
+  s << line;
+  s >> instruct;
+  iti = _instructions.find(instruct); // iti contains a number of arguments
+  if (iti == _instructions.end())
     throw ParseException(std::string("instruction ") + s.str() + " not found");
-  s.clear();
+
+  for (nb_arguments i = iti->second; i > 0; i--)
+    {
+      unsigned int token1, token2;
+      std::string arg_str;
+
+      s >> arg_str;
+      if (arg_str.empty())
+	throw ParseException(std::string("Missing argument for ") + instruct);
+
+      token1 = arg_str.find('(');
+      if (token1 == std::string::npos)
+	throw ParseException(std::string("Syntax error : unable to find value for ") + arg_str);
+
+      // arg_str.substr(0, token) == "int8" ...
+      ita = _arguments.find(arg_str.substr(0, token1)); // ita contains eArgumentType
+      if (ita == _arguments.end())
+	throw ParseException(std::string("No type found (") + arg_str.substr(0, token1) + ")");
+
+      token2 = arg_str.find(')');
+      if (token2 == std::string::npos)
+	throw ParseException(std::string("Syntax error : unable to find value for ") + arg_str);
+
+      // arg_str.substr(token1, token2 - token1) == "42"
+    }
+  if (!s.str().empty())
+    throw ParseException(std::string("Too many arguments for ") + instruct);
 }

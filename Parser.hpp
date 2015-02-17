@@ -14,6 +14,7 @@
 # define BUFF_SIZE 128
 
 enum eArgumentType {Integer, Decimal};
+typedef unsigned int nb_arguments;
 
 class Parser
 {
@@ -47,7 +48,7 @@ private:
   std::vector<void (Parser::*)(void)> _ptr0;
   std::vector<void (Parser::*)(IOperand *)> _ptr1;
 
-  std::map<std::string, unsigned int> _instructions;
+  std::map<std::string, nb_arguments> _instructions;
   std::map<std::string, eArgumentType> _arguments;
 };
 
