@@ -14,9 +14,9 @@ int	main(int argc, char **argv)
   Parser parser;
 
   if (argc == 1)
-    parser.loadFile("");
+    parser.initIO();
   else
-    parser.loadFile(argv[1]);
+    parser.initIO(argv[1]);
   parser.parse();
   return (0);
 }
