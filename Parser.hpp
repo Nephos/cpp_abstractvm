@@ -3,8 +3,10 @@
 
 # include <iostream>
 # include <fstream>
+# include <sstream>
 # include <map>
 # include "MutantStack.hpp"
+# include "Exceptions.hpp"
 
 # define BUFF_SIZE 128
 
