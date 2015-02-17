@@ -23,6 +23,12 @@ ParseException::ParseException(std::string str) : VMException(str)
   _str = std::string("ParseException : ") + str;
 }
 
+SyntaxException::~SyntaxException() throw() {}
+SyntaxException::SyntaxException(std::string str) : ParseException(str)
+{
+  _str = std::string("SyntaxException : ") + str;
+}
+
 PopException::~PopException() throw() {}
 PopException::PopException(std::string str) : VMException(str)
 {
