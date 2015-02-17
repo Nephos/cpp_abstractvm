@@ -2,6 +2,7 @@ NAME		= 	avm
 
 SRC		=  	main.cpp	\
 			Parser.cpp	\
+			VirtualCPU.cpp	\
 			Exceptions.cpp
 
 OBJ		=	$(SRC:.cpp=.o)
