@@ -11,6 +11,18 @@ const char *VMException::what() const throw()
   return _str.c_str();
 }
 
+ExitException::~ExitException() throw() {}
+ExitException::ExitException(std::string str) : VMException(str)
+{
+  _str = std::string("ExitException : ") + str;
+}
+
+AssertException::~AssertException() throw() {}
+AssertException::AssertException(std::string str) : VMException(str)
+{
+  _str = std::string("AssertException : ") + str;
+}
+
 IOException::~IOException() throw() {}
 IOException::IOException(std::string str) : VMException(str)
 {
