@@ -123,7 +123,7 @@ void			Parser::executeInstruction(const std::string & line)
 
   for (nb_arguments i = iti->second; i > 0; i--)
     {
-      unsigned int token1, token2;
+      std::size_t token1, token2;
       std::string arg_str;
 
       s >> arg_str;
