@@ -119,7 +119,7 @@ void			Parser::executeInstruction(const std::string & line)
   s >> instruct;
   iti = _instructions.find(instruct); // iti contains a number of arguments
   if (iti == _instructions.end())
-    throw ParseException(std::string("instruction ") + s.str() + " not found");
+    throw SyntaxException(std::string("instruction ") + s.str() + " not found");
 
   for (nb_arguments i = iti->second; i > 0; i--)
     {
@@ -128,25 +128,25 @@ void			Parser::executeInstruction(const std::string & line)
 
       s >> arg_str;
       if (arg_str.empty())
-	throw ParseException(std::string("Missing argument for ") + instruct);
+	throw SyntaxException(std::string("Missing argument for ") + instruct);
 
       token1 = arg_str.find('(');
       if (token1 == std::string::npos)
-	throw ParseException(std::string("Syntax error : unable to find value for ") + arg_str);
+	throw SyntaxException(std::string("Unable to find value for ") + arg_str);
 
       // arg_str.substr(0, token) == "int8" ...
       ita = _arguments.find(arg_str.substr(0, token1)); // ita contains eArgumentType
       if (ita == _arguments.end())
-	throw ParseException(std::string("No type found (") + arg_str.substr(0, token1) + ")");
+	throw SyntaxException(std::string("No type found (") + arg_str.substr(0, token1) + ")");
 
       token2 = arg_str.find(')');
       if (token2 == std::string::npos)
-	throw ParseException(std::string("Syntax error : unable to find value for ") + arg_str);
+	throw SyntaxException(std::string("Unable to find value for ") + arg_str);
 
       // arg_str.substr(token1, token2 - token1) == "42"
     }
   std::string str;
   s >> str;
   if (!str.empty())
-    throw ParseException(std::string("Too many arguments for ") + instruct + s.str());
+    throw SyntaxException(std::string("Too many arguments for ") + instruct + s.str());
 }
