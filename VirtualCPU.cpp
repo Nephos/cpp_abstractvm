@@ -43,10 +43,9 @@ void            VirtualCPU::dump() {
   // MutantStack<IOperand *>::iterator *itend(&_mutantStack->end());
 
   // while (it != itend) {
-  //   std::cout << it->toString() << std::endl;
+  //   std::cout << (*it)->toString() << std::endl;
   //   ++it;
   // }
-
 }
 
 void            VirtualCPU::add() {
@@ -78,7 +77,6 @@ void            VirtualCPU::mul() {
 
 void            VirtualCPU::div() {
   // Throw if stack size < 2
-  // Throw if divisor is 0
   IOperand *first = _mutantStack->top();
   _mutantStack->pop();
   IOperand *second = _mutantStack->top();
@@ -88,7 +86,6 @@ void            VirtualCPU::div() {
 
 void            VirtualCPU::mod() {
   // Throw if stack size < 2
-  // Throw if divisor is 0
   IOperand *first = _mutantStack->top();
   _mutantStack->pop();
   IOperand *second = _mutantStack->top();
@@ -99,7 +96,7 @@ void            VirtualCPU::mod() {
 void            VirtualCPU::print() {
   // Changer le Throw
   if (_mutantStack->top()->getType() != Int8)
-    throw 1;
+    throw VMException("You cannot \"print\" a non-int8");
   std::stringstream ss;
   ss << _mutantStack->top();
   std::cout << ss.str() << std::endl;
