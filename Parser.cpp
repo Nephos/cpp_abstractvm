@@ -145,6 +145,8 @@ void			Parser::executeInstruction(const std::string & line)
 
       // arg_str.substr(token1, token2 - token1) == "42"
     }
-  if (!s.str().empty())
+  std::string str;
+  s >> str;
+  if (!str.empty())
     throw ParseException(std::string("Too many arguments for ") + instruct + s.str());
 }
