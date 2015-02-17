@@ -15,6 +15,20 @@ protected:
   std::string _str;
 };
 
+class ExitException : public VMException
+{
+public:
+  ExitException(std::string str);
+  virtual ~ExitException() throw();
+};
+
+class AssertException : public VMException
+{
+public:
+  AssertException(std::string str);
+  virtual ~AssertException() throw();
+};
+
 class IOException : public VMException
 {
 public:
