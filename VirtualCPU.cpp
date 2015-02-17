@@ -52,3 +52,28 @@ void            VirtualCPU::print() {
 
 void            VirtualCPU::exit() {
 }
+
+IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value) {
+
+}
+
+IOperand *	VirtualCPU::createInt8(const std::string & value) {
+}
+
+IOperand *	VirtualCPU::createInt16(const std::string & value) {
+
+}
+
+IOperand *	VirtualCPU::createInt32(const std::string & value) {
+
+}
+
+IOperand *	VirtualCPU::createFloat(const std::string & value) {
+
+}
+
+IOperand *	VirtualCPU::createDouble(const std::string & value) {
+
+}
+
+
