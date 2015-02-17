@@ -3,12 +3,17 @@
 
 # include <iostream>
 # include <fstream>
+# include <sstream>
+# include <map>
 # include <vector>
 
-# include "MutantStack.hpp"
 # include "IOperand.hpp"
+# include "MutantStack.hpp"
+# include "Exceptions.hpp"
 
 # define BUFF_SIZE 128
+
+enum eArgumentType {Integer, Decimal};
 
 class Parser
 {
@@ -21,6 +26,7 @@ public:
   void		parse();
   void		initIO(const std::string &);
   void		initIO();
+  void		executeInstruction(const std::string &);
 
 private:
   void		push(IOperand *);
@@ -38,9 +44,11 @@ private:
   MutantStack<IOperand *> *_mutantStack;
   std::istream *_is;
 
-  // void (*ptr1[2])(IOperand *);
   std::vector<void (Parser::*)(void)> _ptr0;
   std::vector<void (Parser::*)(IOperand *)> _ptr1;
+
+  std::map<std::string, unsigned int> _instructions;
+  std::map<std::string, eArgumentType> _arguments;
 };
 
 #endif
