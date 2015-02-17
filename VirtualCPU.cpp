@@ -20,7 +20,7 @@ VirtualCPU::VirtualCPU(const MutantStack<IOperand *> * mutantStack) {
 }
 
 VirtualCPU::~VirtualCPU() {
-  
+
 }
 
 void            VirtualCPU::push(IOperand *elem) {
@@ -28,9 +28,8 @@ void            VirtualCPU::push(IOperand *elem) {
 }
 
 void            VirtualCPU::assert(IOperand *elem) {
-  // Changer le throw avec une xception
   if (elem->toString() != _mutantStack->top()->toString())
-    throw 1;
+    throw AssertException(std::string("Comparaison between (") + elem->toString() + ") and (" + _mutantStack->top()->toString() +  ")");
 }
 
 void            VirtualCPU::pop() {
@@ -46,11 +45,11 @@ void            VirtualCPU::dump() {
   //   std::cout << it->toString() << std::endl;
   //   ++it;
   // }
-  
+
 }
 
 void            VirtualCPU::add() {
-  // Throw if stack size < 2 
+  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
   _mutantStack->pop();
   IOperand *second = _mutantStack->top();
@@ -59,7 +58,7 @@ void            VirtualCPU::add() {
 }
 
 void            VirtualCPU::sub() {
-  // Throw if stack size < 2 
+  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
   _mutantStack->pop();
   IOperand *second = _mutantStack->top();
@@ -68,7 +67,7 @@ void            VirtualCPU::sub() {
 }
 
 void            VirtualCPU::mul() {
-  // Throw if stack size < 2 
+  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
   _mutantStack->pop();
   IOperand *second = _mutantStack->top();
@@ -109,7 +108,7 @@ void            VirtualCPU::exit() {
 }
 
 void		VirtualCPU::executeInstruction(const std::string & instruction, const std::string) {
-  
+
 }
 
 IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value) {
@@ -135,5 +134,3 @@ IOperand *	VirtualCPU::createFloat(const std::string & value) {
 IOperand *	VirtualCPU::createDouble(const std::string & value) {
   return new Operand<double>(value, Double);
 }
-
-
