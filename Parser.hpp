@@ -8,7 +8,6 @@
 # include <vector>
 
 # include "IOperand.hpp"
-# include "MutantStack.hpp"
 # include "Exceptions.hpp"
 
 # define BUFF_SIZE 128
@@ -30,23 +29,8 @@ public:
   void		executeInstruction(const std::string &);
 
 private:
-  void		push(IOperand *);
-  void		assert(IOperand *);
-  void		pop();
-  void		dump();
-  void		add();
-  void		sub();
-  void		mul();
-  void		div();
-  void		mod();
-  void		print();
-  void		exit();
-
-  MutantStack<IOperand *> *_mutantStack;
+  IOperand *createOperand(eOperandType, const std::string &);
   std::istream *_is;
-
-  std::vector<void (Parser::*)(void)> _ptr0;
-  std::vector<void (Parser::*)(IOperand *)> _ptr1;
 
   std::map<std::string, nb_arguments> _instructions;
   std::map<std::string, eArgumentType> _arguments;

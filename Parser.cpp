@@ -1,17 +1,6 @@
 #include "Parser.hpp"
 
 Parser::Parser() {
-  _ptr1.push_back(&Parser::push);
-  _ptr1.push_back(&Parser::assert);
-  _ptr0.push_back(&Parser::pop);
-  _ptr0.push_back(&Parser::dump);
-  _ptr0.push_back(&Parser::add);
-  _ptr0.push_back(&Parser::sub);
-  _ptr0.push_back(&Parser::mul);
-  _ptr0.push_back(&Parser::div);
-  _ptr0.push_back(&Parser::mod);
-  _ptr0.push_back(&Parser::print);
-  _ptr0.push_back(&Parser::exit);
   _instructions["push"] =	1;
   _instructions["pop"] =	0;
   _instructions["dump"] =	0;
@@ -43,48 +32,9 @@ Parser::~Parser() {
 Parser::Parser(const Parser &) {
 }
 
-void		Parser::push(IOperand *elem) {
-  _mutantStack->push(elem);
-}
-
-void		Parser::assert(IOperand *elem) {
-
-}
-
-void		Parser::pop()
+IOperand *	Parser::createOperand(eOperandType type, const std::string & value)
 {
-}
-
-void		Parser::dump()
-{
-}
-
-void		Parser::add()
-{
-}
-
-void		Parser::sub()
-{
-}
-
-void		Parser::mul()
-{
-}
-
-void		Parser::div()
-{
-}
-
-void		Parser::mod()
-{
-}
-
-void		Parser::print()
-{
-}
-
-void		Parser::exit()
-{
+  
 }
 
 void		Parser::parse() {
@@ -123,7 +73,7 @@ void			Parser::executeInstruction(const std::string & line)
 
   for (nb_arguments i = iti->second; i > 0; i--)
     {
-      unsigned int token1, token2;
+      std::size_t token1, token2;
       std::string arg_str;
 
       s >> arg_str;
