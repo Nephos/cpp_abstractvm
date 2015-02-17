@@ -19,8 +19,10 @@ public:
   Parser& operator=(const Parser &);
 
   void		parse();
-  void		loadFile(const std::string &);
+  void		initIO(const std::string &);
+  void		initIO();
   void		executeInstruction(const std::string &);
+
 private:
   MutantStack<std::string> _mutantStack;
   std::istream *is;

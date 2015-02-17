@@ -20,8 +20,14 @@ Parser::Parser() {
 }
 
 Parser::~Parser() {
-  if (dynamic_cast<std::ifstream *>(is))
+  std::ifstream *tmp;
+  if ((tmp = dynamic_cast<std::ifstream *>(is))) {
+    // A CHANGER
+    if (!tmp)
+      throw 1;
+    tmp->close();
     delete is;
+  }
 }
 
 Parser::Parser(const Parser &) {
@@ -31,20 +37,23 @@ void		Parser::parse()
 {
   char buffer[BUFF_SIZE];
 
-  is->getline(buffer, BUFF_SIZE);
-  std::cout << buffer << std::endl;
+  while (is->getline(buffer, BUFF_SIZE)) {
+    std::cout << buffer << std::endl;
+  }
 }
 
-void		Parser::loadFile(const std::string& filename)
+void		Parser::initIO(const std::string& filename)
 {
-  if (filename.empty())
-    is = &std::cin;
-  else {
-    is = new std::ifstream;
-    if (!is->good())
-      return;
-    //throw
-  }
+  std::ifstream * ifs = new std::ifstream(filename.data());
+  if (!ifs->is_open())
+    return;
+  is = ifs;
+  //throw
+}
+
+void		Parser::initIO()
+{
+  is = &std::cin;
 }
 
 void		Parser::executeInstruction(const std::string & instruction)
