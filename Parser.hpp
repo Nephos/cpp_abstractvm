@@ -3,7 +3,10 @@
 
 # include <iostream>
 # include <fstream>
+# include <vector>
+
 # include "MutantStack.hpp"
+# include "IOperand.hpp"
 
 # define BUFF_SIZE 128
 
@@ -20,8 +23,24 @@ public:
   void		initIO();
 
 private:
-  MutantStack<std::string> _mutantStack;
-  std::istream *is;
+  void		push(IOperand *);
+  void		assert(IOperand *);
+  void		pop();
+  void		dump();
+  void		add();
+  void		sub();
+  void		mul();
+  void		div();
+  void		mod();
+  void		print();
+  void		exit();
+
+  MutantStack<IOperand *> *_mutantStack;
+  std::istream *_is;
+
+  // void (*ptr1[2])(IOperand *);
+  std::vector<void (Parser::*)(void)> _ptr0;
+  std::vector<void (Parser::*)(IOperand *)> _ptr1;
 };
 
 #endif
