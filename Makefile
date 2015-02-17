@@ -1,7 +1,9 @@
 NAME		= 	avm
 
 SRC		=  	main.cpp	\
-			Parser.cpp
+			Parser.cpp	\
+			Exceptions.cpp
+
 OBJ		=	$(SRC:.cpp=.o)
 
 CXXFLAGS	+= 	-W -Wall -Wextra

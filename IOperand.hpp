@@ -3,6 +3,14 @@
 
 # include <string>
 
+# define INT8	char
+# define INT16	short
+# define INT32	int
+# define FLOAT	float
+# define DOUBLE	double
+# define MAX	double
+# define MAX2	long double
+
 enum eOperandType {Int8, Int16, Int32, Float, Double};
 
 class IOperand
