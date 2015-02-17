@@ -33,7 +33,8 @@ void            VirtualCPU::assert(IOperand *elem) {
 }
 
 void            VirtualCPU::pop() {
-  // Throw error if stack is empty
+  if (_mutantStack->empty())
+    throw PopException("No element on the stack");
   _mutantStack->pop();
 }
 
