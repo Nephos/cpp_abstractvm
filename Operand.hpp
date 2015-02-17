@@ -4,6 +4,7 @@
 # include <iostream>
 # include <sstream>
 # include "IOperand.hpp"
+# include "Exceptions.hpp"
 
 template <typename T>
 class Operand : public IOperand
@@ -63,7 +64,7 @@ public:
 	return new Operand<DOUBLE>(op.toString(), Double);
 	break;
       default:
-	// throw error
+	throw VMException("");
 	break;
       }
     return NULL;
@@ -93,7 +94,8 @@ public:
   }
 
   virtual IOperand * operator/(const IOperand &rhs) const {
-    //raise on rhs._value == 0
+    if (rhs.toString() == "0")
+      throw DivideByZeroException("");
     if (rhs.getPrecision() > getPrecision())
       {
 	IOperand *tmp = cloneWithType(*this, rhs.getType());
@@ -105,13 +107,11 @@ public:
   }
 
   virtual IOperand * operator%(const IOperand &rhs) const {
-    //raise on rhs._value == 0
+    if (rhs.toString() == "0")
+      throw DivideByZeroException("");
     if (rhs.getType() == Float || rhs.getType() == Double ||
 	this->getType() == Float || this->getType() == Double)
-      {
-	// error
-	return NULL;
-      }
+      throw DecimalException("");
     if (rhs.getPrecision() > getPrecision())
       {
 	IOperand *tmp = cloneWithType(*this, rhs.getType());
