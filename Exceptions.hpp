@@ -29,6 +29,13 @@ public:
   virtual ~ParseException() throw();
 };
 
+class SyntaxException : public ParseException
+{
+public:
+  SyntaxException(std::string str);
+  virtual ~SyntaxException() throw();
+};
+
 class PopException : public VMException
 {
 public:
