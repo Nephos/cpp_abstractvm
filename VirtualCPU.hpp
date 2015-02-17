@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "MutantStack.hpp"
-#include "IOperand.hpp"
+#include "Operand.hpp"
 
 class VirtualCPU {
 public:
@@ -35,6 +35,7 @@ private:
 
   std::vector<void (VirtualCPU::*)(void)> _ptr0;
   std::vector<void (VirtualCPU::*)(IOperand *)> _ptr1;
+  IOperand * (VirtualCPU::*_ptrToOperand[5])(const std::string &);
 };
 
 #endif
