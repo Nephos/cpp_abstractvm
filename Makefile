@@ -1,7 +1,7 @@
 NAME		= 	avm
 
-SRC		=  	main.cpp
-
+SRC		=  	main.cpp	\
+			Parser.cpp
 OBJ		=	$(SRC:.cpp=.o)
 
 CXXFLAGS	+= 	-W -Wall -Wextra
@@ -10,7 +10,7 @@ RM		= 	rm -f
 
 CC		= 	g++
 
-%.o: %.c
+%.o: %.cpp
 		@printf "[\033[0;32mdone\033[0m] % 33s\n" $<
 		@$(CC) -c -o $@ $< $(CFLAGS)
 
