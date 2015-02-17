@@ -91,8 +91,8 @@ void		Parser::parse() {
   char buffer[BUFF_SIZE];
 
   while (_is->getline(buffer, BUFF_SIZE)) {
-
-    std::cout << buffer << std::endl;
+    executeInstruction(buffer);
+    // std::cout << buffer << std::endl;
   }
 }
 
@@ -146,5 +146,5 @@ void			Parser::executeInstruction(const std::string & line)
       // arg_str.substr(token1, token2 - token1) == "42"
     }
   if (!s.str().empty())
-    throw ParseException(std::string("Too many arguments for ") + instruct);
+    throw ParseException(std::string("Too many arguments for ") + instruct + s.str());
 }
