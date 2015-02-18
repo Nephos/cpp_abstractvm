@@ -39,13 +39,13 @@ void            VirtualCPU::pop() {
 }
 
 void            VirtualCPU::dump() {
-  // MutantStack<IOperand *>::iterator *it(&_mutantStack->begin());
-  // MutantStack<IOperand *>::iterator *itend(&_mutantStack->end());
+  MutantStack<IOperand *>::iterator it = _mutantStack->begin();
+  MutantStack<IOperand *>::iterator itend = _mutantStack->end();
 
-  // while (it != itend) {
-  //   std::cout << (*it)->toString() << std::endl;
-  //   ++it;
-  // }
+  while (it != itend) {
+    std::cout << (*it)->toString() << std::endl;
+    ++it;
+  }
 }
 
 void            VirtualCPU::add() {
