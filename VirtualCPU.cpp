@@ -1,6 +1,6 @@
 #include "VirtualCPU.hpp"
 
-VirtualCPU::VirtualCPU(const MutantStack<IOperand *> * mutantStack) {
+VirtualCPU::VirtualCPU(MutantStack<IOperand *> * mutantStack) : _mutantStack(mutantStack) {
   _ptr["push"] = (&VirtualCPU::push);
   _ptr["assert"] = (&VirtualCPU::assert);
   _ptr["pop"] = (&VirtualCPU::pop);
