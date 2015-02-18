@@ -102,9 +102,9 @@ void			Parser::executeLine(const std::string & line)
       if (token2 == std::string::npos)
 	throw SyntaxException(std::string("Unable to find value for ") + arg_str);
 
-      // arg_str.substr(token1, token2 - token1) == "42"
+      // arg_str.substr(token1 + 1, token2 - token1 - 1) == "42"
       args_type.push_back(itt->second);
-      args_value.push_back(arg_str.substr(token1, token2 - token1));
+      args_value.push_back(arg_str.substr(token1 + 1, token2 - token1 - 1));
     }
   std::string str;
   s >> str;
