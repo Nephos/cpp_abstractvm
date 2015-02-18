@@ -81,7 +81,6 @@ void            VirtualCPU::div() {
 }
 
 void            VirtualCPU::mod() {
-  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
