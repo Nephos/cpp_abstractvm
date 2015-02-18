@@ -49,57 +49,52 @@ void            VirtualCPU::dump() {
 }
 
 void            VirtualCPU::add() {
-  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   IOperand *second = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   _mutantStack->push(*first + *second);
 }
 
 void            VirtualCPU::sub() {
-  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   IOperand *second = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   _mutantStack->push(*first - *second);
 }
 
 void            VirtualCPU::mul() {
-  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   IOperand *second = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   _mutantStack->push(*first * *second);
 }
 
 void            VirtualCPU::div() {
-  // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   IOperand *second = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   _mutantStack->push(*first / *second);
 }
 
 void            VirtualCPU::mod() {
   // Throw if stack size < 2
   IOperand *first = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   IOperand *second = _mutantStack->top();
-  _mutantStack->pop();
+  pop();
   _mutantStack->push(*first % *second);
 }
 
 void            VirtualCPU::print() {
-  // Changer le Throw
   if (_mutantStack->top()->getType() != Int8)
     throw VMException("You cannot \"print\" a non-int8");
   std::stringstream ss;
   ss << _mutantStack->top();
-  std::cout << ss.str() << std::endl;
+  std::cout << ss.str();
 }
 
 void            VirtualCPU::exit() {
