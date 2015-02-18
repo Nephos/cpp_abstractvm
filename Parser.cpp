@@ -34,7 +34,7 @@ Parser::Parser(const Parser &) {
 
 IOperand *	Parser::createOperand(eOperandType type, const std::string & value)
 {
-  
+
 }
 
 void		Parser::parse() {
@@ -67,6 +67,8 @@ void			Parser::executeInstruction(const std::string & line)
 
   s << line;
   s >> instruct;
+  if (instruct.empty())
+    return ;
   iti = _instructions.find(instruct); // iti contains a number of arguments
   if (iti == _instructions.end())
     throw SyntaxException(std::string("instruction ") + s.str() + " not found");
