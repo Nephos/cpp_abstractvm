@@ -19,21 +19,20 @@ typedef unsigned int nb_arguments;
 class Parser
 {
 public:
-  Parser(const VirtualCPU *);
+  Parser(VirtualCPU * const cpu);
   ~Parser();
   Parser(const Parser &);
   Parser& operator=(const Parser &);
 
-
   void		parse();
   void		initIO(const std::string &);
   void		initIO();
-  void		executeInstruction(const std::string &);
+  void		executeLine(const std::string &);
 
 private:
   IOperand *createOperand(eOperandType, const std::string &);
   std::istream *_is;
-  const VirtualCPU *_cpu;
+  VirtualCPU * _cpu;
 
   std::map<std::string, nb_arguments> _instructions;
   std::map<std::string, eArgumentType> _arguments;

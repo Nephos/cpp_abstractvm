@@ -23,7 +23,7 @@ public:
   void          print();
   void          exit();
 
-  void		executeInstruction(const std::string &, const std::string);
+  void		executeInstruction(const std::string &, const std::vector<std::string> &);
 
   IOperand *	createOperand(eOperandType type, const std::string & value);
   IOperand *	createInt8(const std::string & value);

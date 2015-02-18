@@ -14,10 +14,9 @@ int	main(int argc, char **argv)
   // toto3 = *toto3 + *toto2;
   // toto3 = *toto3 + *toto2;
 
-  
   MutantStack<IOperand *> mutantStack;
-  VirtualCPU cpu(&mutantStack);
-  Parser parser(&cpu);
+  VirtualCPU *cpu = new VirtualCPU(&mutantStack);
+  Parser parser(cpu);
 
   if (argc == 1)
     parser.initIO();
@@ -25,6 +24,6 @@ int	main(int argc, char **argv)
     parser.initIO(argv[1]);
   parser.parse();
 
-  
+
   return (0);
 }

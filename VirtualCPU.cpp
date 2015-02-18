@@ -96,18 +96,21 @@ void            VirtualCPU::print() {
   std::cout << ss.str();
 }
 
-void            VirtualCPU::exit() {
+void            VirtualCPU::exit()
+{
 }
 
-void		VirtualCPU::executeInstruction(const std::string & instruction, const std::string) {
+void		VirtualCPU::executeInstruction(const std::string & instruction,
+					       const std::vector<std::string> & args)
+{
 
 }
 
-IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value) {
+IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value){
   return (this->*_ptrToOperand[type])(value);
 }
 
-IOperand *	VirtualCPU::createInt8(const std::string & value) {
+IOperand *	VirtualCPU::createInt8(const std::string & value){
   return new Operand<char>(value, Int8);
 }
 
