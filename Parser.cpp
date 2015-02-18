@@ -17,6 +17,11 @@ Parser::Parser(VirtualCPU * const cpu) : _cpu(cpu) {
   _arguments["int32"] =		Integer;
   _arguments["float"] =		Decimal;
   _arguments["double"] =	Decimal;
+  _argumentsTypes["int8"] =	Int8;
+  _argumentsTypes["int16"] =	Int16;
+  _argumentsTypes["int32"] =	Int32;
+  _argumentsTypes["float"] =	Float;
+  _argumentsTypes["double"] =	Double;
 }
 
 Parser::~Parser() {
@@ -63,7 +68,9 @@ void			Parser::executeLine(const std::string & line)
   std::string		instruct;
   std::map<std::string, nb_arguments>::iterator iti;
   std::map<std::string, eArgumentType>::iterator ita;
-  std::vector<std::string>	args;
+  std::map<std::string, eOperandType>::iterator itt;
+  std::vector<eOperandType>	args_type;
+  std::vector<std::string>	args_value;
 
   s << line;
   s >> instruct;
@@ -89,17 +96,19 @@ void			Parser::executeLine(const std::string & line)
       ita = _arguments.find(arg_str.substr(0, token1)); // ita contains eArgumentType
       if (ita == _arguments.end())
 	throw SyntaxException(std::string("No type found (") + arg_str.substr(0, token1) + ")");
+      itt = _argumentsTypes.find(arg_str.substr(0, token1)); // itt contains eOperandType
 
       token2 = arg_str.find(')');
       if (token2 == std::string::npos)
 	throw SyntaxException(std::string("Unable to find value for ") + arg_str);
 
       // arg_str.substr(token1, token2 - token1) == "42"
-      args.push_back(arg_str.substr(0, token1));
+      args_type.push_back(itt->second);
+      args_value.push_back(arg_str.substr(token1, token2 - token1));
     }
   std::string str;
   s >> str;
   if (!str.empty())
     throw SyntaxException(std::string("Too many arguments for ") + instruct + s.str());
-  _cpu->executeInstruction(instruct, args);
+  _cpu->executeInstruction(instruct, args_type, args_value);
 }

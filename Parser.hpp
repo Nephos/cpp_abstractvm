@@ -36,6 +36,7 @@ private:
 
   std::map<std::string, nb_arguments> _instructions;
   std::map<std::string, eArgumentType> _arguments;
+  std::map<std::string, eOperandType> _argumentsTypes;
 };
 
 #endif

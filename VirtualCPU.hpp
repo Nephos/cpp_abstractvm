@@ -1,6 +1,7 @@
 #ifndef VIRTUALCPU_H_
 # define VIRTUALCPU_H_
 
+#include <map>
 #include <vector>
 
 #include "MutantStack.hpp"
@@ -13,17 +14,20 @@ public:
 
   void          push(IOperand *);
   void          assert(IOperand *);
+  void          pop(IOperand *);
   void          pop();
-  void          dump();
-  void          add();
-  void          sub();
-  void          mul();
-  void          div();
-  void          mod();
-  void          print();
-  void          exit();
+  void          dump(IOperand *);
+  void          add(IOperand *);
+  void          sub(IOperand *);
+  void          mul(IOperand *);
+  void          div(IOperand *);
+  void          mod(IOperand *);
+  void          print(IOperand *);
+  void          exit(IOperand *);
 
-  void		executeInstruction(const std::string &, const std::vector<std::string> &);
+  void		executeInstruction(const std::string & instruction,
+				   const std::vector<eOperandType> & args_t,
+				   const std::vector<std::string> & args_v);
 
   IOperand *	createOperand(eOperandType type, const std::string & value);
   IOperand *	createInt8(const std::string & value);
@@ -35,8 +39,7 @@ public:
 private:
   MutantStack<IOperand *> *_mutantStack;
 
-  std::vector<void (VirtualCPU::*)(void)> _ptr0;
-  std::vector<void (VirtualCPU::*)(IOperand *)> _ptr1;
+  std::map<std::string, void (VirtualCPU::*)(IOperand *)> _ptr;
   IOperand * (VirtualCPU::*_ptrToOperand[5])(const std::string &);
 };
 

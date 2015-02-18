@@ -64,7 +64,7 @@ public:
 	return new Operand<DOUBLE>(op.toString(), Double);
 	break;
       default:
-	throw VMException("");
+	throw VMException("Unknow operand type");
 	break;
       }
     return NULL;

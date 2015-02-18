@@ -1,17 +1,17 @@
 #include "VirtualCPU.hpp"
 
 VirtualCPU::VirtualCPU(const MutantStack<IOperand *> * mutantStack) {
-  _ptr1.push_back(&VirtualCPU::push);
-  _ptr1.push_back(&VirtualCPU::assert);
-  _ptr0.push_back(&VirtualCPU::pop);
-  _ptr0.push_back(&VirtualCPU::dump);
-  _ptr0.push_back(&VirtualCPU::add);
-  _ptr0.push_back(&VirtualCPU::sub);
-  _ptr0.push_back(&VirtualCPU::mul);
-  _ptr0.push_back(&VirtualCPU::div);
-  _ptr0.push_back(&VirtualCPU::mod);
-  _ptr0.push_back(&VirtualCPU::print);
-  _ptr0.push_back(&VirtualCPU::exit);
+  _ptr["push"] = (&VirtualCPU::push);
+  _ptr["assert"] = (&VirtualCPU::assert);
+  _ptr["pop"] = (&VirtualCPU::pop);
+  _ptr["dump"] = (&VirtualCPU::dump);
+  _ptr["add"] = (&VirtualCPU::add);
+  _ptr["sub"] = (&VirtualCPU::sub);
+  _ptr["mul"] = (&VirtualCPU::mul);
+  _ptr["div"] = (&VirtualCPU::div);
+  _ptr["mod"] = (&VirtualCPU::mod);
+  _ptr["print"] = (&VirtualCPU::print);
+  _ptr["exit"] = (&VirtualCPU::exit);
   VirtualCPU::_ptrToOperand[0] = &VirtualCPU::createInt8;
   VirtualCPU::_ptrToOperand[1] = &VirtualCPU::createInt16;
   VirtualCPU::_ptrToOperand[2] = &VirtualCPU::createInt32;
@@ -32,13 +32,17 @@ void            VirtualCPU::assert(IOperand *elem) {
     throw AssertException(std::string("Comparaison between (") + elem->toString() + ") and (" + _mutantStack->top()->toString() +  ")");
 }
 
+void            VirtualCPU::pop(__attribute__((unused)) IOperand *) {
+  pop();
+}
+
 void            VirtualCPU::pop() {
   if (_mutantStack->empty())
-    throw PopException("No element on the stack");
+    throw PopException("Not enough element on the stack");
   _mutantStack->pop();
 }
 
-void            VirtualCPU::dump() {
+void            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
   MutantStack<IOperand *>::iterator it = _mutantStack->begin();
   MutantStack<IOperand *>::iterator itend = _mutantStack->end();
 
@@ -48,7 +52,7 @@ void            VirtualCPU::dump() {
   }
 }
 
-void            VirtualCPU::add() {
+void            VirtualCPU::add(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
@@ -56,7 +60,7 @@ void            VirtualCPU::add() {
   _mutantStack->push(*first + *second);
 }
 
-void            VirtualCPU::sub() {
+void            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
@@ -64,7 +68,7 @@ void            VirtualCPU::sub() {
   _mutantStack->push(*first - *second);
 }
 
-void            VirtualCPU::mul() {
+void            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
@@ -72,15 +76,15 @@ void            VirtualCPU::mul() {
   _mutantStack->push(*first * *second);
 }
 
-void            VirtualCPU::div() {
+void            VirtualCPU::div(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
-  pop();
+  pop(NULL);
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first / *second);
 }
 
-void            VirtualCPU::mod() {
+void            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
@@ -88,7 +92,7 @@ void            VirtualCPU::mod() {
   _mutantStack->push(*first % *second);
 }
 
-void            VirtualCPU::print() {
+void            VirtualCPU::print(__attribute__((unused)) IOperand *) {
   if (_mutantStack->top()->getType() != Int8)
     throw VMException("You cannot \"print\" a non-int8");
   std::stringstream ss;
@@ -96,14 +100,23 @@ void            VirtualCPU::print() {
   std::cout << ss.str();
 }
 
-void            VirtualCPU::exit()
+void            VirtualCPU::exit(__attribute__((unused)) IOperand *)
 {
 }
 
 void		VirtualCPU::executeInstruction(const std::string & instruction,
-					       const std::vector<std::string> & args)
+					       const std::vector<eOperandType> & args_t,
+					       const std::vector<std::string> & args_v)
 {
-
+  switch (args_v.size())
+    {
+    case 0:
+      (this->*_ptr[instruction])(NULL);
+      break;
+    case 1:
+      (this->*_ptr[instruction])(createOperand(args_t[0], args_v[0]));
+      break;
+    }
 }
 
 IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value){
