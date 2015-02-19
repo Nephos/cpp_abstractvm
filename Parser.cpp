@@ -110,11 +110,11 @@ void			Parser::executeLine(const std::string & line)
       if (arg_value.empty())
 	arg_value = "0";
       if (ita->second == Integer && (arg_value.find_first_not_of("-0123456789") != std::string::npos ||
-				     arg_value.find_last_of("-") != 0))
-	throw 1; // invalid integer
+				     arg_value.find_last_of("-") != 0 && arg_value.find_last_of("-") != std::string::npos))
+	throw MalformedNumericException("Malformed Integer Value");
       if (ita->second == Decimal && (arg_value.find_first_not_of("-.0123456789") != std::string::npos ||
-				     arg_value.find_last_of("-") != 0) || arg_value.find_first_of(".") != arg_value.find_last_of("."))
-	throw 1; // invalid decimal
+				     arg_value.find_last_of("-") != 0 && arg_value.find_last_of("-") != std::string::npos) || arg_value.find_first_of(".") != arg_value.find_last_of("."))
+	throw MalformedNumericException("Malformed Decimal Value");
       args_type.push_back(itt->second);
       args_value.push_back(arg_value);
     }
