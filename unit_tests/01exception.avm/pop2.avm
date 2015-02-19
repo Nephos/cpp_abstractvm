@@ -1,0 +1,2 @@
+push Int32(42)
+add
