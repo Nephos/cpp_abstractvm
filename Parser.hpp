@@ -31,7 +31,6 @@ public:
   void		executeLine(const std::string &);
 
 private:
-  IOperand *createOperand(eOperandType, const std::string &);
   std::istream *_is;
   VirtualCPU * _cpu;
 
