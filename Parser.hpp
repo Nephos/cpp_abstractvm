@@ -3,23 +3,41 @@
 
 # include <iostream>
 # include <fstream>
-# include "MutantStack.hpp"
+# include <sstream>
+# include <map>
+# include <vector>
+# include <algorithm>
+
+# include "VirtualCPU.hpp"
+# include "IOperand.hpp"
+# include "Exceptions.hpp"
 
 # define BUFF_SIZE 128
+
+enum eArgumentType {Integer, Decimal};
+typedef unsigned int nb_arguments;
 
 class Parser
 {
 public:
-  Parser();
+  Parser(VirtualCPU * const cpu);
   ~Parser();
   Parser(const Parser &);
   Parser& operator=(const Parser &);
 
   void		parse();
-  void		loadFile(const std::string &);
+  void		initIO(const std::string &);
+  void		initIO();
+  void		executeLine(const std::string &);
+
 private:
-  MutantStack<std::string> _mutantStack;
-  std::istream *is;
+  IOperand *createOperand(eOperandType, const std::string &);
+  std::istream *_is;
+  VirtualCPU * _cpu;
+
+  std::map<std::string, nb_arguments> _instructions;
+  std::map<std::string, eArgumentType> _arguments;
+  std::map<std::string, eOperandType> _argumentsTypes;
 };
 
 #endif

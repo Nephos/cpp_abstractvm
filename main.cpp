@@ -1,6 +1,8 @@
 #include "IOperand.hpp"
 #include "Operand.hpp"
 #include "Parser.hpp"
+#include "MutantStack.hpp"
+#include "VirtualCPU.hpp"
 
 int	main(int argc, char **argv)
 {
@@ -11,12 +13,17 @@ int	main(int argc, char **argv)
   // toto3 = *toto3 + *toto2;
   // toto3 = *toto3 + *toto2;
   // toto3 = *toto3 + *toto2;
-  Parser parser;
+
+  MutantStack<IOperand *> mutantStack;
+  VirtualCPU *cpu = new VirtualCPU(&mutantStack);
+  Parser parser(cpu);
 
   if (argc == 1)
-    parser.loadFile("");
+    parser.initIO();
   else
-    parser.loadFile(argv[1]);
+    parser.initIO(argv[1]);
   parser.parse();
+
+
   return (0);
 }

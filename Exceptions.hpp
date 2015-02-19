@@ -15,6 +15,20 @@ protected:
   std::string _str;
 };
 
+class ExitException : public VMException
+{
+public:
+  ExitException(std::string str);
+  virtual ~ExitException() throw();
+};
+
+class AssertException : public VMException
+{
+public:
+  AssertException(std::string str);
+  virtual ~AssertException() throw();
+};
+
 class IOException : public VMException
 {
 public:
@@ -27,6 +41,20 @@ class ParseException : public VMException
 public:
   ParseException(std::string str);
   virtual ~ParseException() throw();
+};
+
+class SyntaxException : public ParseException
+{
+public:
+  SyntaxException(std::string str);
+  virtual ~SyntaxException() throw();
+};
+
+class MalformedNumericException : public SyntaxException
+{
+public:
+  MalformedNumericException(std::string str);
+  virtual ~MalformedNumericException() throw();
 };
 
 class PopException : public VMException
