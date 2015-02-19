@@ -50,6 +50,13 @@ public:
   virtual ~SyntaxException() throw();
 };
 
+class MalformedNumericException : public SyntaxException
+{
+public:
+  MalformedNumericException(std::string str);
+  virtual ~MalformedNumericException() throw();
+};
+
 class PopException : public VMException
 {
 public:
