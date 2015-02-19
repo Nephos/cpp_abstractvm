@@ -109,9 +109,11 @@ void			Parser::executeLine(const std::string & line)
 	arg_value = arg_value.substr(arg_value.find_first_not_of('0') + 1); // remove trailling ZERO
       if (arg_value.empty())
 	arg_value = "0";
-      if (ita->second == Integer && arg_value.find_first_not_of("-0123456789") != std::string::npos)
-	  throw 1; // invalid integer
-      if (ita->second == Decimal && arg_value.find_first_not_of("-.0123456789") != std::string::npos)
+      if (ita->second == Integer && (arg_value.find_first_not_of("-0123456789") != std::string::npos ||
+				     arg_value.find_last_of("-") != 0))
+	throw 1; // invalid integer
+      if (ita->second == Decimal && (arg_value.find_first_not_of("-.0123456789") != std::string::npos ||
+				     arg_value.find_last_of("-") != 0) || arg_value.find_first_of(".") != arg_value.find_last_of("."))
 	throw 1; // invalid decimal
       args_type.push_back(itt->second);
       args_value.push_back(arg_value);
