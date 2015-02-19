@@ -41,6 +41,12 @@ SyntaxException::SyntaxException(std::string str) : ParseException(str)
   _str = std::string("SyntaxException : ") + str;
 }
 
+MalformedNumericException::~MalformedNumericException() throw() {}
+MalformedNumericException::MalformedNumericException(std::string str) : SyntaxException(str)
+{
+  _str = std::string("MalformedNumericException : ") + str;
+}
+
 PopException::~PopException() throw() {}
 PopException::PopException(std::string str) : VMException(str)
 {
