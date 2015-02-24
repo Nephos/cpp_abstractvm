@@ -6,6 +6,8 @@
 # include "IOperand.hpp"
 # include "Exceptions.hpp"
 
+extern double max_value[5];
+
 template <typename T>
 class Operand : public IOperand
 {
@@ -77,6 +79,8 @@ public:
   virtual IOperand * operator+(const IOperand &rhs) const {
     if (rhs.getPrecision() > getPrecision())
       return (rhs + *this);
+    if (double overflow = getValue<T>(*this) + getValue<T>(rhs) > max_value[getPrecision()])
+      throw OverflowException("Overflow in addition");
     return new Operand<T>(getValue<T>(*this) + getValue<T>(rhs), _type);
   }
 
