@@ -99,4 +99,11 @@ public:
   virtual ~OverflowException() throw();
 };
 
+class UnderflowException : public MathException
+{
+public:
+  UnderflowException(std::string str);
+  virtual ~UnderflowException() throw();
+};
+
 #endif /* !EXCEPTIONS_H_ */

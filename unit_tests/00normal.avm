@@ -17,12 +17,16 @@ mul
 
 dump
 
-push float(3)
+push float(3.0)
 sub
 
 dump
 
-; add assert(v)
+assert int8(3)
+assert int16(3)
+assert int32(3)
+assert float(3.0)
+assert double(3.0)
 
 exit
 ;;

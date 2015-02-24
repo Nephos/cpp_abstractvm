@@ -1,7 +1,7 @@
 NAME		= 	avm
 
 SRC		=  	main.cpp	\
-			Parser.cpp	\
+			Chipset.cpp	\
 			VirtualCPU.cpp	\
 			Exceptions.cpp
 
@@ -14,25 +14,24 @@ RM		= 	rm -f
 CC		= 	g++
 
 %.o: %.cpp
-		@printf "[\033[0;32mdone\033[0m] % 33s\n" $<
+		@printf "[\033[0;32mdone\033[0m] % 33s\n" $< | sed "s/ /./2g"
 		@$(CC) -c -o $@ $< $(CXXFLAGS)
 
 all:		$(NAME)
 
 debug:		CXXFLAGS += -DDEBUG_MODE
-
-debug:		all
+debug:		re
 
 $(NAME):	$(OBJ)
 		@$(CC) $(OBJ) -o $(NAME)
 
 clean:
-		@printf "[\033[0;31mdeleted\033[0m] % 30s\n" $(OBJ)
+		@printf "[\033[0;31mdeleted\033[0m] % 30s\n" $(OBJ) $< | sed "s/ /./2g"
 		@$(RM) $(OBJ)
 
 fclean:		clean
 		@$(RM) $(NAME)
-		@printf "[\033[0;31mdeleted\033[0m] % 30s\n" $(NAME)
+		@printf "[\033[0;31mdeleted\033[0m] % 30s\n" $(NAME) $< | sed "s/ /./2g"
 
 re:		fclean all
 

@@ -1,8 +1,12 @@
 #include "IOperand.hpp"
 #include "Operand.hpp"
-#include "Parser.hpp"
+#include "Chipset.hpp"
 #include "MutantStack.hpp"
 #include "VirtualCPU.hpp"
+
+#include <climits>
+#include <cfloat>
+double max_value[5] = { SCHAR_MAX, SHRT_MAX, INT_MAX, FLT_MAX, DBL_MAX};
 
 int	main(int argc, char **argv)
 {
@@ -20,13 +24,13 @@ int	main(int argc, char **argv)
 
   MutantStack<IOperand *> mutantStack;
   VirtualCPU *cpu = new VirtualCPU(&mutantStack);
-  Parser parser(cpu);
+  Chipset chipset(cpu);
 
   if (argc == 1)
-    parser.initIO();
+    chipset.initIO();
   else
-    parser.initIO(argv[1]);
-  parser.parse();
+    chipset.initIO(argv[1]);
+  chipset.parse();
 
 
   return (0);

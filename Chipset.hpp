@@ -1,5 +1,5 @@
-#ifndef PARSER_HPP
-# define PARSER_HPP
+#ifndef CHIPSET_HPP
+# define CHIPSET_HPP
 
 # include <iostream>
 # include <fstream>
@@ -17,13 +17,13 @@
 enum eArgumentType {Integer, Decimal};
 typedef unsigned int nb_arguments;
 
-class Parser
+class Chipset
 {
 public:
-  Parser(VirtualCPU * const cpu);
-  ~Parser();
-  Parser(const Parser &);
-  Parser& operator=(const Parser &);
+  Chipset(VirtualCPU * const cpu);
+  ~Chipset();
+  Chipset(const Chipset &);
+  Chipset& operator=(const Chipset &);
 
   void		parse();
   void		initIO(const std::string &);

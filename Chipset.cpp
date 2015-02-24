@@ -1,10 +1,16 @@
-#include "Parser.hpp"
+#include "Chipset.hpp"
 
-Parser::Parser(VirtualCPU * const cpu) : _cpu(cpu) {
+Chipset::Chipset(VirtualCPU * const cpu) : _cpu(cpu) {
   _instructions["push"] =	1;
   _instructions["pop"] =	0;
   _instructions["dump"] =	0;
   _instructions["assert"] =	1;
+  _instructions["assert_eq"] =	1;
+  _instructions["assert_not"] =	1;
+  _instructions["assert_gt"] =	1;
+  _instructions["assert_lt"] =	1;
+  _instructions["assert_get"] =	1;
+  _instructions["assert_let"] =	1;
   _instructions["add"] =	0;
   _instructions["sub"] =	0;
   _instructions["mul"] =	0;
@@ -22,9 +28,10 @@ Parser::Parser(VirtualCPU * const cpu) : _cpu(cpu) {
   _argumentsTypes["int32"] =	Int32;
   _argumentsTypes["float"] =	Float;
   _argumentsTypes["double"] =	Double;
+  _is = NULL;
 }
 
-Parser::~Parser()
+Chipset::~Chipset()
 {
   std::ifstream *tmp;
   if ((tmp = dynamic_cast<std::ifstream *>(_is))) {
@@ -35,10 +42,10 @@ Parser::~Parser()
   }
 }
 
-Parser::Parser(const Parser &) {
+Chipset::Chipset(const Chipset &) {
 }
 
-void		Parser::parse()
+void		Chipset::parse()
 {
   char buffer[BUFF_SIZE];
   int exited = 0;
@@ -60,18 +67,18 @@ void		Parser::parse()
     throw NoExitException("Missing exit instruction");
 }
 
-void		Parser::initIO(const std::string& filename) {
+void		Chipset::initIO(const std::string& filename) {
   std::ifstream * ifs = new std::ifstream(filename.data());
   if (!ifs->is_open())
     throw IOException(std::string("Unable to open ") + filename);
   _is = ifs;
 }
 
-void		Parser::initIO() {
+void		Chipset::initIO() {
   _is = &std::cin;
 }
 
-int			Parser::executeLine(const std::string & line)
+int			Chipset::executeLine(const std::string & line)
 {
   std::stringstream	s;
   std::string		instruct;
@@ -127,7 +134,8 @@ int			Parser::executeLine(const std::string & line)
       if ((ita->second == Decimal) && (
 				       (arg_value.find_first_not_of("-.0123456789") != std::string::npos) ||
 				       (arg_value.find_last_of("-") != 0 && arg_value.find_last_of("-") != std::string::npos)
-				       || (arg_value.find_first_of(".") != arg_value.find_last_of(".")))
+				       || (arg_value.find_first_of(".") != arg_value.find_last_of("."))
+				       || arg_value.find_last_of(".") == std::string::npos)
 	  )
 	throw MalformedNumericException("Malformed Decimal Value");
       args_type.push_back(itt->second);
