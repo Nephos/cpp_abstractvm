@@ -31,6 +31,12 @@ public:
     iterator it(&std::stack<T>::c[std::stack<T>::c.size()]);
     return it;
   }
+  iterator last() {
+    if (std::stack<T>::c.empty())
+      return end();
+    iterator it(&std::stack<T>::c[std::stack<T>::c.size() - 1]);
+    return it;
+  }
 };
 
 #endif

@@ -31,6 +31,7 @@ int            VirtualCPU::push(IOperand *elem) {
 int            VirtualCPU::assert(IOperand *elem) {
   if (elem->toString() != _mutantStack->top()->toString())
     throw AssertException(std::string("Comparaison between (") + elem->toString() + ") and (" + _mutantStack->top()->toString() +  ")");
+  // +delete item
   return 0;
 }
 
@@ -48,11 +49,13 @@ int            VirtualCPU::pop() {
 
 int            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
   MutantStack<IOperand *>::iterator it = _mutantStack->begin();
-  MutantStack<IOperand *>::iterator itend = _mutantStack->end();
+  MutantStack<IOperand *>::iterator itlast = _mutantStack->last();
 
-  while (it != itend) {
-    std::cout << (*it)->toString() << std::endl;
-    ++it;
+  while (itlast != it) {
+    std::cout << (*itlast)->toString() << std::endl;
+    --itlast;
+    if (itlast == it)
+      std::cout << (*itlast)->toString() << std::endl;
   }
   return 0;
 }

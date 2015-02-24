@@ -22,6 +22,7 @@ Parser::Parser(VirtualCPU * const cpu) : _cpu(cpu) {
   _argumentsTypes["int32"] =	Int32;
   _argumentsTypes["float"] =	Float;
   _argumentsTypes["double"] =	Double;
+  _is = NULL;
 }
 
 Parser::~Parser()
