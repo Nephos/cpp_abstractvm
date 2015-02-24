@@ -128,7 +128,8 @@ int			Chipset::executeLine(const std::string & line)
       if ((ita->second == Decimal) && (
 				       (arg_value.find_first_not_of("-.0123456789") != std::string::npos) ||
 				       (arg_value.find_last_of("-") != 0 && arg_value.find_last_of("-") != std::string::npos)
-				       || (arg_value.find_first_of(".") != arg_value.find_last_of(".")))
+				       || (arg_value.find_first_of(".") != arg_value.find_last_of("."))
+				       || arg_value.find_last_of(".") == std::string::npos)
 	  )
 	throw MalformedNumericException("Malformed Decimal Value");
       args_type.push_back(itt->second);
