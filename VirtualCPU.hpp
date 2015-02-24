@@ -19,6 +19,7 @@ public:
 
   int          push(IOperand *);
   int          assert(IOperand *);
+  int          assert_eq(IOperand *);
   int          assert_not(IOperand *);
   int          assert_gt(IOperand *);
   int          assert_lt(IOperand *);

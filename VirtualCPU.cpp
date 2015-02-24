@@ -3,6 +3,7 @@
 VirtualCPU::VirtualCPU(MutantStack<IOperand *> * mutantStack) : _mutantStack(mutantStack) {
   _ptr["push"] = (&VirtualCPU::push);
   _ptr["assert"] = (&VirtualCPU::assert);
+  _ptr["assert_eq"] = (&VirtualCPU::assert_eq);
   _ptr["assert_not"] = (&VirtualCPU::assert_not);
   _ptr["assert_gt"] = (&VirtualCPU::assert_gt);
   _ptr["assert_lt"] = (&VirtualCPU::assert_lt);
@@ -48,6 +49,11 @@ int            VirtualCPU::assert(IOperand *elem) {
   delete first;
   delete second;
   return 0;
+}
+
+int		VirtualCPU::assert_eq(IOperand *elem)
+{
+  return assert(elem);
 }
 
 int            VirtualCPU::assert_not(IOperand *elem) {

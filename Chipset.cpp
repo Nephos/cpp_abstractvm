@@ -5,6 +5,7 @@ Chipset::Chipset(VirtualCPU * const cpu) : _cpu(cpu) {
   _instructions["pop"] =	0;
   _instructions["dump"] =	0;
   _instructions["assert"] =	1;
+  _instructions["assert_eq"] =	1;
   _instructions["assert_not"] =	1;
   _instructions["assert_gt"] =	1;
   _instructions["assert_lt"] =	1;
