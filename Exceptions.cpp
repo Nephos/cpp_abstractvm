@@ -82,3 +82,9 @@ OverflowException::OverflowException(std::string str) : MathException(str)
 {
   _str = std::string("OverflowException : ") + str;
 }
+
+UnderflowException::~UnderflowException() throw() {}
+UnderflowException::UnderflowException(std::string str) : MathException(str)
+{
+  _str = std::string("UnderflowException : ") + str;
+}
