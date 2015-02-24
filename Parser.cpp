@@ -24,7 +24,8 @@ Parser::Parser(VirtualCPU * const cpu) : _cpu(cpu) {
   _argumentsTypes["double"] =	Double;
 }
 
-Parser::~Parser() {
+Parser::~Parser()
+{
   std::ifstream *tmp;
   if ((tmp = dynamic_cast<std::ifstream *>(_is))) {
     if (tmp) {
@@ -37,15 +38,17 @@ Parser::~Parser() {
 Parser::Parser(const Parser &) {
 }
 
-void		Parser::parse() {
+void		Parser::parse()
+{
   char buffer[BUFF_SIZE];
-
+  int exited = 0;
   while (_is->getline(buffer, BUFF_SIZE)) {
+    if (_is == &std::cin && std::string(buffer).find(";;") == 0)
+      break;
 #ifdef DEBUG_MODE
     try {
 #endif
-      if (executeLine(buffer) == 1)
-	return ;
+      exited |= executeLine(buffer);
 #ifdef DEBUG_MODE
     }
     catch (const VMException &e) {
@@ -53,7 +56,8 @@ void		Parser::parse() {
     }
 #endif
   }
-  throw NoExitException;
+  if (!exited)
+    throw NoExitException("Missing exit instruction");
 }
 
 void		Parser::initIO(const std::string& filename) {
@@ -80,7 +84,7 @@ int			Parser::executeLine(const std::string & line)
 
   s << line;
   s >> instruct;
-  if (instruct.empty())
+  if (instruct.empty() || instruct[0] == ';')
     return 0;
   iti = _instructions.find(instruct); // iti contains a number of arguments
   if (iti == _instructions.end())

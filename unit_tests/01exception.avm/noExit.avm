@@ -1,0 +1,6 @@
+push int32(64)
+push int32(128)
+add
+pop
+
+;;

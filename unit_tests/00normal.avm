@@ -1,0 +1,28 @@
+push int8(21)
+push int8(42)
+dump
+
+push int32(45000)
+push int32(65000)
+add
+dump
+
+push int32(10)
+div
+
+dump
+
+push int32(2)
+mul
+
+dump
+
+push float(3)
+sub
+
+dump
+
+; add assert(v)
+
+exit
+;;
