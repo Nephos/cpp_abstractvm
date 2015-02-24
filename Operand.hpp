@@ -14,12 +14,16 @@ public:
     std::stringstream s;
     s << string;
     s >> _value;
+    if ((_type == Double || _type == Float) && _string.find(".") == std::string::npos)
+      _string += ".0";
   }
 
   Operand(const double & value, const eOperandType type) : _value(value), _type(type) {
     std::stringstream s;
     s << value;
     _string = s.str();
+    if ((_type == Double || _type == Float) && _string.find(".") == std::string::npos)
+      _string += ".0";
   }
 
   virtual ~Operand() {}

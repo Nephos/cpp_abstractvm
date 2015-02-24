@@ -29,9 +29,19 @@ int            VirtualCPU::push(IOperand *elem) {
 }
 
 int            VirtualCPU::assert(IOperand *elem) {
-  if (elem->toString() != _mutantStack->top()->toString())
-    throw AssertException(std::string("Comparaison between (") + elem->toString() + ") and (" + _mutantStack->top()->toString() +  ")");
-  // +delete item
+  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
+  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  IOperand *second = createOperand(accuracy, elem->toString());
+  delete elem;
+  if (first->toString() != second->toString())
+    {
+      std::string what = std::string("Comparaison between (") + first->toString() + ") and (" + second->toString() + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
   return 0;
 }
 
@@ -52,10 +62,18 @@ int            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
   MutantStack<IOperand *>::iterator itlast = _mutantStack->last();
 
   while (itlast != it) {
+#ifdef DUMP_WITH_PRECISION
+    std::cout << (*itlast)->toString() << " (" << (*it)->getPrecision() << ")" << std::endl;
+#else
     std::cout << (*itlast)->toString() << std::endl;
+#endif
     --itlast;
     if (itlast == it)
-      std::cout << (*itlast)->toString() << std::endl;
+#ifdef DUMP_WITH_PRECISION
+    std::cout << (*itlast)->toString() << " (" << (*it)->getPrecision() << ")" << std::endl;
+#else
+    std::cout << (*itlast)->toString() << std::endl;
+#endif
   }
   return 0;
 }
@@ -66,6 +84,8 @@ int            VirtualCPU::add(__attribute__((unused)) IOperand *) {
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first + *second);
+  delete first;
+  delete second;
   return 0;
 }
 
@@ -75,6 +95,8 @@ int            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first - *second);
+  delete first;
+  delete second;
   return 0;
 }
 
@@ -84,6 +106,8 @@ int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first * *second);
+  delete first;
+  delete second;
   return 0;
 }
 
@@ -93,6 +117,9 @@ int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first / *second);
+  // catch and rethrow
+  delete first;
+  delete second;
   return 0;
 }
 
@@ -102,6 +129,9 @@ int            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first % *second);
+  // catch and rethrow
+  delete first;
+  delete second;
   return 0;
 }
 
