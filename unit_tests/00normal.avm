@@ -1,23 +1,23 @@
-push Int8(21)
-push Int8(42)
+push int8(21)
+push int8(42)
 dump
 
-push Int32(45000)
-push Int32(65000)
+push int32(45000)
+push int32(65000)
 add
 dump
 
-push Int32(10)
+push int32(10)
 div
 
 dump
 
-push Int32(2)
+push int32(2)
 mul
 
 dump
 
-push Float(3)
+push float(3)
 sub
 
 dump

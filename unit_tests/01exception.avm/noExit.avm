@@ -1,5 +1,5 @@
-push Int32(64)
-push Int32(128)
+push int32(64)
+push int32(128)
 add
 pop
 
