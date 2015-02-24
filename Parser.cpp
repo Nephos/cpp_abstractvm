@@ -80,7 +80,7 @@ int			Parser::executeLine(const std::string & line)
 
   s << line;
   s >> instruct;
-  if (instruct.empty())
+  if (instruct.empty() || instruct[0] == ';')
     return 0;
   iti = _instructions.find(instruct); // iti contains a number of arguments
   if (iti == _instructions.end())
