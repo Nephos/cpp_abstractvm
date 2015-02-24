@@ -1,7 +1,7 @@
 NAME		= 	avm
 
 SRC		=  	main.cpp	\
-			Parser.cpp	\
+			Chipset.cpp	\
 			VirtualCPU.cpp	\
 			Exceptions.cpp
 

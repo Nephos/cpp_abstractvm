@@ -1,6 +1,6 @@
-#include "Parser.hpp"
+#include "Chipset.hpp"
 
-Parser::Parser(VirtualCPU * const cpu) : _cpu(cpu) {
+Chipset::Chipset(VirtualCPU * const cpu) : _cpu(cpu) {
   _instructions["push"] =	1;
   _instructions["pop"] =	0;
   _instructions["dump"] =	0;
@@ -25,7 +25,7 @@ Parser::Parser(VirtualCPU * const cpu) : _cpu(cpu) {
   _is = NULL;
 }
 
-Parser::~Parser()
+Chipset::~Chipset()
 {
   std::ifstream *tmp;
   if ((tmp = dynamic_cast<std::ifstream *>(_is))) {
@@ -36,10 +36,10 @@ Parser::~Parser()
   }
 }
 
-Parser::Parser(const Parser &) {
+Chipset::Chipset(const Chipset &) {
 }
 
-void		Parser::parse()
+void		Chipset::parse()
 {
   char buffer[BUFF_SIZE];
   int exited = 0;
@@ -61,18 +61,18 @@ void		Parser::parse()
     throw NoExitException("Missing exit instruction");
 }
 
-void		Parser::initIO(const std::string& filename) {
+void		Chipset::initIO(const std::string& filename) {
   std::ifstream * ifs = new std::ifstream(filename.data());
   if (!ifs->is_open())
     throw IOException(std::string("Unable to open ") + filename);
   _is = ifs;
 }
 
-void		Parser::initIO() {
+void		Chipset::initIO() {
   _is = &std::cin;
 }
 
-int			Parser::executeLine(const std::string & line)
+int			Chipset::executeLine(const std::string & line)
 {
   std::stringstream	s;
   std::string		instruct;
