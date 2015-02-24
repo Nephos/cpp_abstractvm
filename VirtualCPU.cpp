@@ -3,6 +3,11 @@
 VirtualCPU::VirtualCPU(MutantStack<IOperand *> * mutantStack) : _mutantStack(mutantStack) {
   _ptr["push"] = (&VirtualCPU::push);
   _ptr["assert"] = (&VirtualCPU::assert);
+  _ptr["assert_not"] = (&VirtualCPU::assert_not);
+  _ptr["assert_gt"] = (&VirtualCPU::assert_gt);
+  _ptr["assert_lt"] = (&VirtualCPU::assert_lt);
+  _ptr["assert_get"] = (&VirtualCPU::assert_get);
+  _ptr["assert_let"] = (&VirtualCPU::assert_let);
   _ptr["pop"] = (&VirtualCPU::pop);
   _ptr["dump"] = (&VirtualCPU::dump);
   _ptr["add"] = (&VirtualCPU::add);
@@ -35,7 +40,116 @@ int            VirtualCPU::assert(IOperand *elem) {
   delete elem;
   if (first->toString() != second->toString())
     {
-      std::string what = std::string("Comparaison between (") + first->toString() + ") and (" + second->toString() + ")";
+      std::string what = std::string("Comparaison EQ between (") + first->toString() + ") and (" + second->toString() + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
+  return 0;
+}
+
+int            VirtualCPU::assert_not(IOperand *elem) {
+  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
+  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  IOperand *second = createOperand(accuracy, elem->toString());
+  delete elem;
+  if (first->toString() == second->toString())
+    {
+      std::string what = std::string("Comparaison NEQ between (") + first->toString() + ") and (" + second->toString() + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
+  return 0;
+}
+
+int            VirtualCPU::assert_gt(IOperand *elem) {
+  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
+  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  IOperand *second = createOperand(accuracy, elem->toString());
+  delete elem;
+  std::stringstream s1, s2;
+  double d1, d2;
+  s1 << first->toString();
+  s1 >> d1;
+  s2 << second->toString();
+  s2 >> d2;
+  if (d1 < d2)
+    {
+      std::string what = std::string("Comparaison GT between (") + first->toString() + ") and (" + second->toString() + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
+  return 0;
+}
+
+int            VirtualCPU::assert_lt(IOperand *elem) {
+  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
+  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  IOperand *second = createOperand(accuracy, elem->toString());
+  delete elem;
+  std::stringstream s1, s2;
+  double d1, d2;
+  s1 << first->toString();
+  s1 >> d1;
+  s2 << second->toString();
+  s2 >> d2;
+  if (d1 > d2)
+    {
+      std::string what = std::string("Comparaison LT between (") + first->toString() + ") and (" + second->toString() + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
+  return 0;
+}
+
+int            VirtualCPU::assert_get(IOperand *elem) {
+  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
+  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  IOperand *second = createOperand(accuracy, elem->toString());
+  delete elem;
+  std::stringstream s1, s2;
+  double d1, d2;
+  s1 << first->toString();
+  s1 >> d1;
+  s2 << second->toString();
+  s2 >> d2;
+  if (d1 <= d2)
+    {
+      std::string what = std::string("Comparaison GET between (") + first->toString() + ") and (" + second->toString() + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
+  return 0;
+}
+
+int            VirtualCPU::assert_let(IOperand *elem) {
+  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
+  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  IOperand *second = createOperand(accuracy, elem->toString());
+  delete elem;
+  std::stringstream s1, s2;
+  double d1, d2;
+  s1 << first->toString();
+  s1 >> d1;
+  s2 << second->toString();
+  s2 >> d2;
+  if (d1 >= d2)
+    {
+      std::string what = std::string("Comparaison LET between (") + first->toString() + ") and (" + second->toString() + ")";
       delete first;
       delete second;
       throw AssertException(what);
