@@ -114,10 +114,14 @@ int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
   IOperand *first = top();
   pop();
   _mutantStack->push(*first * *second);
+  if (top()->toString() == "0.0" && first->toString() != "0.0" && second->toString() != "0.0" && first->toString() != "0" && second->toString() != "0")
+    {
+      delete first;
+      delete second;
+      throw UnderflowException("multiplication with non-zero value cannot return a zero");
+    }
   delete first;
   delete second;
-  if (_mutantStack->top()->toString() == "0.0" && first->toString() != "0.0" && second->toString() != "0.0" && first->toString() != "0" && second->toString() != "0")
-    throw UnderflowException("multiplication with non-zero value cannot return a zero");
   return 0;
 }
 
