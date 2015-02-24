@@ -68,13 +68,15 @@ int            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
     std::cout << (*itlast)->toString() << std::endl;
 #endif
     --itlast;
-    if (itlast == it)
-#ifdef DUMP_WITH_PRECISION
-    std::cout << (*itlast)->toString() << " (" << (*it)->getPrecision() << ")" << std::endl;
-#else
-    std::cout << (*itlast)->toString() << std::endl;
-#endif
   }
+  if (itlast == it)
+    {
+#ifdef DUMP_WITH_PRECISION
+      std::cout << (*itlast)->toString() << " (" << (*it)->getPrecision() << ")" << std::endl;
+#else
+      std::cout << (*itlast)->toString() << std::endl;
+#endif
+    }
   return 0;
 }
 
@@ -108,6 +110,8 @@ int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
   _mutantStack->push(*first * *second);
   delete first;
   delete second;
+  if (_mutantStack->top()->toString() == "0.0" && first->toString() != "0.0" && second->toString() != "0.0" && first->toString() != "0" && second->toString() != "0")
+    throw UnderflowException("multiplication with non-zero value cannot return a zero");
   return 0;
 }
 
@@ -116,10 +120,20 @@ int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
   pop(NULL);
   IOperand *second = _mutantStack->top();
   pop();
-  _mutantStack->push(*first / *second);
-  // catch and rethrow
+  IOperand *result;
+  try {
+      result = *first / *second;
+    }
+  catch  (const VMException &e) {
+      delete first;
+      delete second;
+      throw;
+    }
+  _mutantStack->push(result);
   delete first;
   delete second;
+  if (result->toString() == "0.0" && first->toString() != "0.0")
+    throw UnderflowException("division of non-zero value cannot return a zero");
   return 0;
 }
 
@@ -128,8 +142,16 @@ int            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
   pop();
   IOperand *second = _mutantStack->top();
   pop();
-  _mutantStack->push(*first % *second);
-  // catch and rethrow
+  IOperand *result;
+  try {
+      result = *first % *second;
+    }
+  catch  (const VMException &e) {
+      delete first;
+      delete second;
+      throw;
+    }
+  _mutantStack->push(result);
   delete first;
   delete second;
   return 0;
