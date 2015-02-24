@@ -28,7 +28,7 @@ public:
   void		parse();
   void		initIO(const std::string &);
   void		initIO();
-  void		executeLine(const std::string &);
+  int		executeLine(const std::string &);
 
 private:
   std::istream *_is;

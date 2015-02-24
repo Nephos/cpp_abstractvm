@@ -23,26 +23,30 @@ VirtualCPU::~VirtualCPU() {
 
 }
 
-void            VirtualCPU::push(IOperand *elem) {
+int            VirtualCPU::push(IOperand *elem) {
   _mutantStack->push(elem);
+  return 0;
 }
 
-void            VirtualCPU::assert(IOperand *elem) {
+int            VirtualCPU::assert(IOperand *elem) {
   if (elem->toString() != _mutantStack->top()->toString())
     throw AssertException(std::string("Comparaison between (") + elem->toString() + ") and (" + _mutantStack->top()->toString() +  ")");
+  return 0;
 }
 
-void            VirtualCPU::pop(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::pop(__attribute__((unused)) IOperand *) {
   pop();
+  return 0;
 }
 
-void            VirtualCPU::pop() {
+int            VirtualCPU::pop() {
   if (_mutantStack->empty())
     throw PopException("Not enough element on the stack");
   _mutantStack->pop();
+  return 0;
 }
 
-void            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
   MutantStack<IOperand *>::iterator it = _mutantStack->begin();
   MutantStack<IOperand *>::iterator itend = _mutantStack->end();
 
@@ -50,73 +54,82 @@ void            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
     std::cout << (*it)->toString() << std::endl;
     ++it;
   }
+  return 0;
 }
 
-void            VirtualCPU::add(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::add(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first + *second);
+  return 0;
 }
 
-void            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first - *second);
+  return 0;
 }
 
-void            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first * *second);
+  return 0;
 }
 
-void            VirtualCPU::div(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop(NULL);
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first / *second);
+  return 0;
 }
 
-void            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
   IOperand *first = _mutantStack->top();
   pop();
   IOperand *second = _mutantStack->top();
   pop();
   _mutantStack->push(*first % *second);
+  return 0;
 }
 
-void            VirtualCPU::print(__attribute__((unused)) IOperand *) {
+int            VirtualCPU::print(__attribute__((unused)) IOperand *) {
   if (_mutantStack->top()->getType() != Int8)
     throw VMException("You cannot \"print\" a non-int8");
   std::stringstream ss;
   ss << _mutantStack->top();
   std::cout << ss.str();
+  return 0;
 }
 
-void            VirtualCPU::exit(__attribute__((unused)) IOperand *)
+int            VirtualCPU::exit(__attribute__((unused)) IOperand *)
 {
+  return 1;
 }
 
-void		VirtualCPU::executeInstruction(const std::string & instruction,
+int		VirtualCPU::executeInstruction(const std::string & instruction,
 					       const std::vector<eOperandType> & args_t,
 					       const std::vector<std::string> & args_v)
 {
   switch (args_v.size())
     {
     case 0:
-      (this->*_ptr[instruction])(NULL);
+      return (this->*_ptr[instruction])(NULL);
       break;
     case 1:
-      (this->*_ptr[instruction])(createOperand(args_t[0], args_v[0]));
+      return (this->*_ptr[instruction])(createOperand(args_t[0], args_v[0]));
       break;
     }
+  return 1;
 }
 
 IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value){

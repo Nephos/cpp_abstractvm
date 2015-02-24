@@ -44,7 +44,8 @@ void		Parser::parse() {
 #ifdef DEBUG_MODE
     try {
 #endif
-      executeLine(buffer);
+      if (executeLine(buffer) == 1)
+	return ;
 #ifdef DEBUG_MODE
     }
     catch (const VMException &e) {
@@ -52,6 +53,7 @@ void		Parser::parse() {
     }
 #endif
   }
+  throw NoExitException;
 }
 
 void		Parser::initIO(const std::string& filename) {
@@ -65,7 +67,7 @@ void		Parser::initIO() {
   _is = &std::cin;
 }
 
-void			Parser::executeLine(const std::string & line)
+int			Parser::executeLine(const std::string & line)
 {
   std::stringstream	s;
   std::string		instruct;
@@ -79,7 +81,7 @@ void			Parser::executeLine(const std::string & line)
   s << line;
   s >> instruct;
   if (instruct.empty())
-    return ;
+    return 0;
   iti = _instructions.find(instruct); // iti contains a number of arguments
   if (iti == _instructions.end())
     throw SyntaxException(std::string("instruction ") + s.str() + " not found");
@@ -131,5 +133,5 @@ void			Parser::executeLine(const std::string & line)
   s >> str;
   if (!str.empty())
     throw SyntaxException(std::string("Too many arguments for ") + instruct + s.str());
-  _cpu->executeInstruction(instruct, args_type, args_value);
+  return _cpu->executeInstruction(instruct, args_type, args_value);
 }

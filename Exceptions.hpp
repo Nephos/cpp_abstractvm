@@ -43,6 +43,13 @@ public:
   virtual ~ParseException() throw();
 };
 
+class NoExitException : public ParseException
+{
+public:
+  NoExitException(std::string str);
+  virtual ~NoExitException() throw();
+};
+
 class SyntaxException : public ParseException
 {
 public:

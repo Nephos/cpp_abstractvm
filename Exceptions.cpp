@@ -35,6 +35,12 @@ ParseException::ParseException(std::string str) : VMException(str)
   _str = std::string("ParseException : ") + str;
 }
 
+NoExitException::~NoExitException() throw() {}
+NoExitException::NoExitException(std::string str) : ParseException(str)
+{
+  _str = std::string("NoExitException : ") + str;
+}
+
 SyntaxException::~SyntaxException() throw() {}
 SyntaxException::SyntaxException(std::string str) : ParseException(str)
 {
