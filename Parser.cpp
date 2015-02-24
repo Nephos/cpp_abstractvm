@@ -43,7 +43,7 @@ void		Parser::parse()
   char buffer[BUFF_SIZE];
   int exited = 0;
   while (_is->getline(buffer, BUFF_SIZE)) {
-    if (std::string(buffer).find(";;") == 0)
+    if (_is == &std::cin && std::string(buffer).find(";;") == 0)
       break;
 #ifdef DEBUG_MODE
     try {
