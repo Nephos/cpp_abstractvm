@@ -43,11 +43,25 @@ public:
   virtual ~ParseException() throw();
 };
 
+class NoExitException : public ParseException
+{
+public:
+  NoExitException(std::string str);
+  virtual ~NoExitException() throw();
+};
+
 class SyntaxException : public ParseException
 {
 public:
   SyntaxException(std::string str);
   virtual ~SyntaxException() throw();
+};
+
+class MalformedNumericException : public SyntaxException
+{
+public:
+  MalformedNumericException(std::string str);
+  virtual ~MalformedNumericException() throw();
 };
 
 class PopException : public VMException

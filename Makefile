@@ -15,9 +15,13 @@ CC		= 	g++
 
 %.o: %.cpp
 		@printf "[\033[0;32mdone\033[0m] % 33s\n" $<
-		@$(CC) -c -o $@ $< $(CFLAGS)
+		@$(CC) -c -o $@ $< $(CXXFLAGS)
 
 all:		$(NAME)
+
+debug:		CXXFLAGS += -DDEBUG_MODE
+
+debug:		all
 
 $(NAME):	$(OBJ)
 		@$(CC) $(OBJ) -o $(NAME)
@@ -32,4 +36,4 @@ fclean:		clean
 
 re:		fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:		all clean fclean re debug

@@ -37,18 +37,23 @@ Parser::~Parser() {
 Parser::Parser(const Parser &) {
 }
 
-IOperand *	Parser::createOperand(eOperandType type, const std::string & value)
-{
-
-}
-
 void		Parser::parse() {
   char buffer[BUFF_SIZE];
 
   while (_is->getline(buffer, BUFF_SIZE)) {
-    executeLine(buffer);
-    // std::cout << buffer << std::endl;
+#ifdef DEBUG_MODE
+    try {
+#endif
+      if (executeLine(buffer) == 1)
+	return ;
+#ifdef DEBUG_MODE
+    }
+    catch (const VMException &e) {
+      std::cout << e.what() << std::endl;
+    }
+#endif
   }
+  throw NoExitException;
 }
 
 void		Parser::initIO(const std::string& filename) {
@@ -62,7 +67,7 @@ void		Parser::initIO() {
   _is = &std::cin;
 }
 
-void			Parser::executeLine(const std::string & line)
+int			Parser::executeLine(const std::string & line)
 {
   std::stringstream	s;
   std::string		instruct;
@@ -71,11 +76,12 @@ void			Parser::executeLine(const std::string & line)
   std::map<std::string, eOperandType>::iterator itt;
   std::vector<eOperandType>	args_type;
   std::vector<std::string>	args_value;
+  std::string			arg_value;
 
   s << line;
   s >> instruct;
   if (instruct.empty())
-    return ;
+    return 0;
   iti = _instructions.find(instruct); // iti contains a number of arguments
   if (iti == _instructions.end())
     throw SyntaxException(std::string("instruction ") + s.str() + " not found");
@@ -103,12 +109,29 @@ void			Parser::executeLine(const std::string & line)
 	throw SyntaxException(std::string("Unable to find value for ") + arg_str);
 
       // arg_str.substr(token1 + 1, token2 - token1 - 1) == "42"
+      arg_value = arg_str.substr(token1 + 1, token2 - token1 - 1);
+      if (!arg_value.empty() && arg_value[0] == '0')
+	arg_value = arg_value.substr(arg_value.find_first_not_of('0') + 1); // remove trailling ZERO
+      if (arg_value.empty())
+	arg_value = "0";
+      if ((ita->second == Integer) && (
+				       (arg_value.find_first_not_of("-0123456789") != std::string::npos) ||
+				       (arg_value.find_last_of("-") != 0 && arg_value.find_last_of("-") != std::string::npos)
+				       )
+	  )
+	throw MalformedNumericException("Malformed Integer Value");
+      if ((ita->second == Decimal) && (
+				       (arg_value.find_first_not_of("-.0123456789") != std::string::npos) ||
+				       (arg_value.find_last_of("-") != 0 && arg_value.find_last_of("-") != std::string::npos)
+				       || (arg_value.find_first_of(".") != arg_value.find_last_of(".")))
+	  )
+	throw MalformedNumericException("Malformed Decimal Value");
       args_type.push_back(itt->second);
-      args_value.push_back(arg_str.substr(token1 + 1, token2 - token1 - 1));
+      args_value.push_back(arg_value);
     }
   std::string str;
   s >> str;
   if (!str.empty())
     throw SyntaxException(std::string("Too many arguments for ") + instruct + s.str());
-  _cpu->executeInstruction(instruct, args_type, args_value);
+  return _cpu->executeInstruction(instruct, args_type, args_value);
 }

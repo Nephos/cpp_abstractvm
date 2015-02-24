@@ -6,6 +6,7 @@
 # include <sstream>
 # include <map>
 # include <vector>
+# include <algorithm>
 
 # include "VirtualCPU.hpp"
 # include "IOperand.hpp"
@@ -27,10 +28,9 @@ public:
   void		parse();
   void		initIO(const std::string &);
   void		initIO();
-  void		executeLine(const std::string &);
+  int		executeLine(const std::string &);
 
 private:
-  IOperand *createOperand(eOperandType, const std::string &);
   std::istream *_is;
   VirtualCPU * _cpu;
 

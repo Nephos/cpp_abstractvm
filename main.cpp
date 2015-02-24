@@ -6,6 +6,10 @@
 
 int	main(int argc, char **argv)
 {
+#ifdef DEBUG_MODE
+  std::cerr << "DEBUG MODE" << std::endl;
+#endif
+
   // IOperand	*toto1 = new Operand<char>("0", Int8);
   // IOperand	*toto2 = new Operand<char>("1", Int8);
   // IOperand	*toto3 = *toto1 + *toto2;

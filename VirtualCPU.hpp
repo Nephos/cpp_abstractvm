@@ -12,20 +12,20 @@ public:
   VirtualCPU(MutantStack<IOperand *> *);
   ~VirtualCPU();
 
-  void          push(IOperand *);
-  void          assert(IOperand *);
-  void          pop(IOperand *);
-  void          pop();
-  void          dump(IOperand *);
-  void          add(IOperand *);
-  void          sub(IOperand *);
-  void          mul(IOperand *);
-  void          div(IOperand *);
-  void          mod(IOperand *);
-  void          print(IOperand *);
-  void          exit(IOperand *);
+  int          push(IOperand *);
+  int          assert(IOperand *);
+  int          pop(IOperand *);
+  int          pop();
+  int          dump(IOperand *);
+  int          add(IOperand *);
+  int          sub(IOperand *);
+  int          mul(IOperand *);
+  int          div(IOperand *);
+  int          mod(IOperand *);
+  int          print(IOperand *);
+  int          exit(IOperand *);
 
-  void		executeInstruction(const std::string & instruction,
+  int		executeInstruction(const std::string & instruction,
 				   const std::vector<eOperandType> & args_t,
 				   const std::vector<std::string> & args_v);
 
@@ -39,7 +39,7 @@ public:
 private:
   MutantStack<IOperand *> *_mutantStack;
 
-  std::map<std::string, void (VirtualCPU::*)(IOperand *)> _ptr;
+  std::map<std::string, int (VirtualCPU::*)(IOperand *)> _ptr;
   IOperand * (VirtualCPU::*_ptrToOperand[5])(const std::string &);
 };
 

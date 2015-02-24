@@ -35,10 +35,22 @@ ParseException::ParseException(std::string str) : VMException(str)
   _str = std::string("ParseException : ") + str;
 }
 
+NoExitException::~NoExitException() throw() {}
+NoExitException::NoExitException(std::string str) : ParseException(str)
+{
+  _str = std::string("NoExitException : ") + str;
+}
+
 SyntaxException::~SyntaxException() throw() {}
 SyntaxException::SyntaxException(std::string str) : ParseException(str)
 {
   _str = std::string("SyntaxException : ") + str;
+}
+
+MalformedNumericException::~MalformedNumericException() throw() {}
+MalformedNumericException::MalformedNumericException(std::string str) : SyntaxException(str)
+{
+  _str = std::string("MalformedNumericException : ") + str;
 }
 
 PopException::~PopException() throw() {}
