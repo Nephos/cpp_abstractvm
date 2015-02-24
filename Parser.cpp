@@ -53,7 +53,7 @@ void		Parser::parse() {
     }
 #endif
   }
-  throw NoExitException;
+  throw NoExitException("Missing exit instruction");
 }
 
 void		Parser::initIO(const std::string& filename) {
