@@ -12,10 +12,12 @@ public:
   VirtualCPU(MutantStack<IOperand *> *);
   ~VirtualCPU();
 
-  int          push(IOperand *);
-  int          assert(IOperand *);
   int          pop(IOperand *);
   int          pop();
+  IOperand     *top();
+
+  int          push(IOperand *);
+  int          assert(IOperand *);
   int          dump(IOperand *);
   int          add(IOperand *);
   int          sub(IOperand *);

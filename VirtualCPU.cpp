@@ -45,14 +45,20 @@ int            VirtualCPU::assert(IOperand *elem) {
   return 0;
 }
 
-int            VirtualCPU::pop(__attribute__((unused)) IOperand *) {
+int		VirtualCPU::pop(__attribute__((unused)) IOperand *) {
   pop();
   return 0;
 }
 
-int            VirtualCPU::pop() {
+IOperand	*VirtualCPU::top() {
   if (_mutantStack->empty())
     throw PopException("Not enough element on the stack");
+  return _mutantStack->top();
+}
+
+int		VirtualCPU::pop() {
+  if (_mutantStack->empty())
+    throw PopException("Not enough element on the stack to pop");
   _mutantStack->pop();
   return 0;
 }
@@ -81,9 +87,9 @@ int            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
 }
 
 int            VirtualCPU::add(__attribute__((unused)) IOperand *) {
-  IOperand *first = _mutantStack->top();
+  IOperand *second = top();
   pop();
-  IOperand *second = _mutantStack->top();
+  IOperand *first = top();
   pop();
   _mutantStack->push(*first + *second);
   delete first;
@@ -92,9 +98,9 @@ int            VirtualCPU::add(__attribute__((unused)) IOperand *) {
 }
 
 int            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
-  IOperand *first = _mutantStack->top();
+  IOperand *second = top();
   pop();
-  IOperand *second = _mutantStack->top();
+  IOperand *first = top();
   pop();
   _mutantStack->push(*first - *second);
   delete first;
@@ -103,9 +109,9 @@ int            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
 }
 
 int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
-  IOperand *first = _mutantStack->top();
+  IOperand *second = top();
   pop();
-  IOperand *second = _mutantStack->top();
+  IOperand *first = top();
   pop();
   _mutantStack->push(*first * *second);
   delete first;
@@ -116,9 +122,9 @@ int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
 }
 
 int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
-  IOperand *first = _mutantStack->top();
-  pop(NULL);
-  IOperand *second = _mutantStack->top();
+  IOperand *second = top();
+  pop();
+  IOperand *first = top();
   pop();
   IOperand *result;
   try {
@@ -138,9 +144,9 @@ int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
 }
 
 int            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
-  IOperand *first = _mutantStack->top();
+  IOperand *second = top();
   pop();
-  IOperand *second = _mutantStack->top();
+  IOperand *first = top();
   pop();
   IOperand *result;
   try {
