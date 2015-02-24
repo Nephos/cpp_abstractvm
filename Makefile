@@ -20,7 +20,7 @@ CC		= 	g++
 all:		$(NAME)
 
 debug:		CXXFLAGS += -DDEBUG_MODE
-debug:		all
+debug:		re
 
 $(NAME):	$(OBJ)
 		@$(CC) $(OBJ) -o $(NAME)
