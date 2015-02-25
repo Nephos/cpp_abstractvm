@@ -63,8 +63,17 @@ void		Chipset::parse()
     }
 #endif
   }
-  if (!exited)
-    throw NoExitException("Missing exit instruction");
+#ifdef DEBUG_MODE
+  try {
+#endif
+    if (!exited)
+      throw NoExitException("Missing exit instruction");
+#ifdef DEBUG_MODE
+  }
+  catch (const VMException &e) {
+    std::cout << e.what() << std::endl;
+  }
+#endif
 }
 
 void		Chipset::initIO(const std::string& filename) {
