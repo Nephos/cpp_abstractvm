@@ -4,10 +4,6 @@
 #include "MutantStack.hpp"
 #include "VirtualCPU.hpp"
 
-#include <climits>
-#include <cfloat>
-double max_value[5] = { SCHAR_MAX, SHRT_MAX, INT_MAX, FLT_MAX, DBL_MAX};
-
 int	main(int argc, char **argv)
 {
 #ifdef DEBUG_MODE
@@ -21,6 +17,7 @@ int	main(int argc, char **argv)
     {
       Chipset chipset(cpu);
       chipset.initIO();
+      chipset.parse();
     }
   else
     for (int i = 1; i < argc; i++)

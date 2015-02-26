@@ -130,10 +130,10 @@ int			Chipset::executeLine(const std::string & line)
 
       // arg_str.substr(token1 + 1, token2 - token1 - 1) == "42"
       arg_value = arg_str.substr(token1 + 1, token2 - token1 - 1);
-      if (!arg_value.empty() && arg_value[0] == '0')
-	arg_value = arg_value.substr(arg_value.find_first_not_of('0') + 1); // remove trailling ZERO
-      if (arg_value.empty())
-	arg_value = "0";
+      if (!arg_value.empty() && arg_value[0] == '0' && arg_value.find_first_not_of('0') != std::string::npos)
+	arg_value = arg_value.substr(arg_value.find_first_not_of('0')); // remove trailling ZERO
+      if (arg_value[0] == '.')
+	arg_value = "0" + arg_value;
       if ((ita->second == Integer) && (
 				       (arg_value.find_first_not_of("-0123456789") != std::string::npos) ||
 				       (arg_value.find_last_of("-") != 0 && arg_value.find_last_of("-") != std::string::npos)
