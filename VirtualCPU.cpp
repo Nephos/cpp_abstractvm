@@ -260,10 +260,14 @@ int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
       throw;
     }
   _mutantStack->push(result);
+  if (result->toString() == "0.0" && first->toString() != "0.0")
+    {
+      delete first;
+      delete second;
+      throw UnderflowException("division of non-zero value cannot return a zero");
+    }
   delete first;
   delete second;
-  if (result->toString() == "0.0" && first->toString() != "0.0")
-    throw UnderflowException("division of non-zero value cannot return a zero");
   return 0;
 }
 
