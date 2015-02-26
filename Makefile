@@ -7,7 +7,7 @@ SRC		=  	main.cpp	\
 
 OBJ		=	$(SRC:.cpp=.o)
 
-CXXFLAGS	+= 	-W -Wall -Wextra
+CXXFLAGS	+= 	-W -Wall -Wextra -g
 
 RM		= 	rm -f
 

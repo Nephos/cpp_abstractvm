@@ -211,7 +211,16 @@ int            VirtualCPU::add(__attribute__((unused)) IOperand *) {
   pop();
   IOperand *first = top();
   pop();
-  _mutantStack->push(*first + *second);
+  IOperand *result;
+  try {
+    result = *first + *second;
+    _mutantStack->push(result);
+  }
+  catch  (const VMException &e) {
+    delete first;
+    delete second;
+    throw;
+  }
   delete first;
   delete second;
   return 0;
@@ -222,7 +231,16 @@ int            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
   pop();
   IOperand *first = top();
   pop();
-  _mutantStack->push(*first - *second);
+  IOperand *result;
+  try {
+    result = *first - *second;
+    _mutantStack->push(result);
+  }
+  catch  (const VMException &e) {
+    delete first;
+    delete second;
+    throw;
+  }
   delete first;
   delete second;
   return 0;
@@ -233,13 +251,16 @@ int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
   pop();
   IOperand *first = top();
   pop();
-  _mutantStack->push(*first * *second);
-  if (top()->toString() == "0.0" && first->toString() != "0.0" && second->toString() != "0.0" && first->toString() != "0" && second->toString() != "0")
-    {
-      delete first;
-      delete second;
-      throw UnderflowException("multiplication with non-zero value cannot return a zero");
-    }
+  IOperand *result;
+  try {
+    result = *first * *second;
+    _mutantStack->push(result);
+  }
+  catch  (const VMException &e) {
+    delete first;
+    delete second;
+    throw;
+  }
   delete first;
   delete second;
   return 0;
@@ -252,20 +273,14 @@ int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
   pop();
   IOperand *result;
   try {
-      result = *first / *second;
-    }
+    result = *first / *second;
+    _mutantStack->push(result);
+  }
   catch  (const VMException &e) {
-      delete first;
-      delete second;
-      throw;
-    }
-  _mutantStack->push(result);
-  if (result->toString() == "0.0" && first->toString() != "0.0")
-    {
-      delete first;
-      delete second;
-      throw UnderflowException("division of non-zero value cannot return a zero");
-    }
+    delete first;
+    delete second;
+    throw;
+  }
   delete first;
   delete second;
   return 0;
@@ -278,14 +293,14 @@ int            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
   pop();
   IOperand *result;
   try {
-      result = *first % *second;
-    }
+    result = *first % *second;
+    _mutantStack->push(result);
+  }
   catch  (const VMException &e) {
-      delete first;
-      delete second;
-      throw;
-    }
-  _mutantStack->push(result);
+    delete first;
+    delete second;
+    throw;
+  }
   delete first;
   delete second;
   return 0;
