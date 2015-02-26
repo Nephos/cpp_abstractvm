@@ -184,6 +184,8 @@ int		VirtualCPU::pop() {
 }
 
 int            VirtualCPU::dump(__attribute__((unused)) IOperand *) {
+  if (_mutantStack->empty())
+    return 0;
   MutantStack<IOperand *>::iterator it = _mutantStack->begin();
   MutantStack<IOperand *>::iterator itlast = _mutantStack->last();
 
