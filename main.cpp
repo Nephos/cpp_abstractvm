@@ -21,6 +21,7 @@ int	main(int argc, char **argv)
     {
       Chipset chipset(cpu);
       chipset.initIO();
+      chipset.parse();
     }
   else
     for (int i = 1; i < argc; i++)
