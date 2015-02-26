@@ -370,9 +370,17 @@ IOperand *	VirtualCPU::createInt32(const std::string & value) {
 }
 
 IOperand *	VirtualCPU::createFloat(const std::string & value) {
+  if (value[0] != '-' && value > toString((unsigned long)std::numeric_limits<float>::max()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((unsigned long)std::numeric_limits<float>::max()));
+  if (value[0] == '-' && value > toString((unsigned long)std::numeric_limits<float>::min()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((unsigned long)std::numeric_limits<float>::min()));
   return new Operand<float>(value, Float);
 }
 
 IOperand *	VirtualCPU::createDouble(const std::string & value) {
+  if (value[0] != '-' && value > toString((unsigned long)std::numeric_limits<double>::max()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((unsigned long)std::numeric_limits<double>::max()));
+  if (value[0] == '-' && value > toString((unsigned long)std::numeric_limits<double>::min()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((unsigned long)std::numeric_limits<double>::min()));
   return new Operand<double>(value, Double);
 }
