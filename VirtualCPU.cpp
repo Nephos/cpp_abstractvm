@@ -1,4 +1,5 @@
 #include "VirtualCPU.hpp"
+#include "std_improve.hpp"
 
 VirtualCPU::VirtualCPU(MutantStack<IOperand *> * mutantStack) : _mutantStack(mutantStack) {
   _ptr["push"] = (&VirtualCPU::push);
@@ -338,19 +339,33 @@ int		VirtualCPU::executeInstruction(const std::string & instruction,
   return 1;
 }
 
+# include <limits>
+
 IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value){
   return (this->*_ptrToOperand[type])(value);
 }
 
 IOperand *	VirtualCPU::createInt8(const std::string & value){
+  if (value[0] != '-' && value > toString((unsigned long)std::numeric_limits<char>::max()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((unsigned long)std::numeric_limits<char>::max()));
+  if (value[0] == '-' && value > toString((unsigned long)std::numeric_limits<char>::min()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((unsigned long)std::numeric_limits<char>::min()));
   return new Operand<char>(value, Int8);
 }
 
 IOperand *	VirtualCPU::createInt16(const std::string & value) {
+  if (value[0] != '-' && value > toString((unsigned long)std::numeric_limits<short>::max()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((unsigned long)std::numeric_limits<short>::max()));
+  if (value[0] == '-' && value > toString((unsigned long)std::numeric_limits<short>::min()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((unsigned long)std::numeric_limits<short>::min()));
   return new Operand<short>(value, Int16);
 }
 
 IOperand *	VirtualCPU::createInt32(const std::string & value) {
+  if (value[0] != '-' && value > toString((unsigned long)std::numeric_limits<int>::max()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((unsigned long)std::numeric_limits<int>::max()));
+  if (value[0] == '-' && value > toString((unsigned long)std::numeric_limits<int>::min()))
+    throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((unsigned long)std::numeric_limits<int>::min()));
   return new Operand<int>(value, Int32);
 }
 

@@ -12,7 +12,7 @@
 # include "IOperand.hpp"
 # include "Exceptions.hpp"
 
-# define BUFF_SIZE 512
+# define BUFF_SIZE 50000
 
 enum eArgumentType {Integer, Decimal};
 typedef unsigned int nb_arguments;
