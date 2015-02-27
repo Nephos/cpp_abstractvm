@@ -1,3 +1,4 @@
+#include <limits>
 #include "VirtualCPU.hpp"
 #include "std_improve.hpp"
 
@@ -338,8 +339,6 @@ int		VirtualCPU::executeInstruction(const std::string & instruction,
     }
   return 1;
 }
-
-# include <limits>
 
 IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & value){
   return (this->*_ptrToOperand[type])(value);
