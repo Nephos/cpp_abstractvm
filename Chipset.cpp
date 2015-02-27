@@ -49,19 +49,23 @@ void		Chipset::parse()
 {
   char buffer[BUFF_SIZE];
   int exited = 0;
+  size_t line = 0;
   while (_is->getline(buffer, BUFF_SIZE)) {
+    line++;
     if (_is == &std::cin && std::string(buffer).find(";;") == 0)
       break;
-#ifdef DEBUG_MODE
     try {
-#endif
       exited |= executeLine(buffer);
+    }
+    catch (VMException &e) {
+      e.setLine(line);
+      e.setFile(_filename);
 #ifdef DEBUG_MODE
-    }
-    catch (const VMException &e) {
       std::cout << e.what() << std::endl;
-    }
+#else
+      throw;
 #endif
+    }
   }
 #ifdef DEBUG_MODE
   try {
@@ -81,10 +85,12 @@ void		Chipset::initIO(const std::string& filename) {
   if (!ifs->is_open())
     throw IOException(std::string("Unable to open ") + filename);
   _is = ifs;
+  _filename = filename;
 }
 
 void		Chipset::initIO() {
   _is = &std::cin;
+  _filename = "stdin";
 }
 
 int			Chipset::executeLine(const std::string & line)

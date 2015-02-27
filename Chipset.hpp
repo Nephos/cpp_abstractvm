@@ -7,6 +7,7 @@
 # include <map>
 # include <vector>
 # include <algorithm>
+# include <string>
 
 # include "VirtualCPU.hpp"
 # include "IOperand.hpp"
@@ -32,6 +33,7 @@ public:
 
 private:
   std::istream *_is;
+  std::string _filename;
   VirtualCPU * _cpu;
 
   std::map<std::string, nb_arguments> _instructions;

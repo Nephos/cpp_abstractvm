@@ -1,3 +1,4 @@
+#include "std_improve.hpp"
 #include "Exceptions.hpp"
 
 VMException::~VMException() throw() {}
@@ -8,7 +9,15 @@ VMException::VMException(std::string str)
 
 const char *VMException::what() const throw()
 {
-  return _str.c_str();
+  return (std::string("(<") + _file + ">:" + toString(_line) + ") " + _str).c_str();
+}
+
+void	VMException::setLine(size_t line) {
+  _line = line;
+}
+
+void	VMException::setFile(std::string file) {
+  _file = file;
 }
 
 ExitException::~ExitException() throw() {}
