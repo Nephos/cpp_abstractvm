@@ -1,0 +1,11 @@
+;test assert
+push int32(42)
+assert int32(42)
+
+assert double(42.0)
+assert double(042.0)
+
+;test print
+push int8(97)
+print
+exit

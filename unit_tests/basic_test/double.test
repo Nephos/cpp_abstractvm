@@ -1,0 +1,20 @@
+push double(1000000.0)
+push double(2000000.0)
+dump
+
+add
+dump
+
+push double(1000000.0)
+sub
+dump
+
+push double(2.0)
+mul
+dump
+
+push double(4.0)
+div
+dump
+
+exit

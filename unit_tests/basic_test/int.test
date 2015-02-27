@@ -1,0 +1,20 @@
+push int32(1000000)
+push int32(2000000)
+dump
+
+add
+dump
+
+push int32(1000000)
+sub
+dump
+
+push int32(2)
+mul
+dump
+
+push int32(4)
+div
+dump
+
+exit

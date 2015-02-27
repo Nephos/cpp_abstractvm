@@ -1,4 +1,17 @@
 push int32(2000000000)
 push int32(2000000000)
 mul
+pop
+push int16(10000)
+push int16(10000)
+mul
+
+push int8(100)
+push int8(100)
+mul
+
+push float(2000000000)
+push float(2000000000)
+mul
+
 exit

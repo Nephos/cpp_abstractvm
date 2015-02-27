@@ -22,11 +22,5 @@ sub
 
 dump
 
-assert int8(21997)
-assert int16(21997)
-assert int32(21997)
-assert float(21997.0)
-assert double(21997.0)
-
 exit
 ;;

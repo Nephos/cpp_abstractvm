@@ -1,0 +1,10 @@
+push int8(2)
+push int32(1000000000)
+
+dump
+push float(2222322555252555555555555.0)
+mul
+dump
+
+
+exit
