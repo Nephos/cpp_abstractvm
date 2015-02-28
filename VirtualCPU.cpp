@@ -314,8 +314,11 @@ int            VirtualCPU::print(__attribute__((unused)) IOperand *) {
   if (_mutantStack->top()->getType() != Int8)
     throw VMException("You cannot \"print\" a non-int8");
   std::stringstream ss;
-  ss << _mutantStack->top();
-  std::cout << ss.str();
+  int i;
+  ss << _mutantStack->top()->toString();
+  ss >> i;
+  char c = i;
+  std::cout << c;
   return 0;
 }
 
@@ -345,24 +348,24 @@ IOperand *	VirtualCPU::createOperand(eOperandType type, const std::string & valu
 }
 
 IOperand *	VirtualCPU::createInt8(const std::string & value){
-  if (value[0] != '-' && value > toString((long double)std::numeric_limits<char>::max()))
-    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((long double)std::numeric_limits<char>::max()));
+  if (value[0] != '-' && fromString<size_t>(value) > (long double)std::numeric_limits<char>::max())
+    throw SyntaxException(std::string("Overflow of ") + value + " for maximum at " + toString((long double)std::numeric_limits<char>::max()));
   if (value[0] == '-' && value > toString((long double)std::numeric_limits<char>::min()))
     throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((long double)std::numeric_limits<char>::min()));
   return new Operand<char>(value, Int8);
 }
 
 IOperand *	VirtualCPU::createInt16(const std::string & value) {
-  if (value[0] != '-' && value > toString((long double)std::numeric_limits<short>::max()))
-    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((long double)std::numeric_limits<short>::max()));
+  if (value[0] != '-' && fromString<size_t>(value) > (long double)std::numeric_limits<short>::max())
+    throw SyntaxException(std::string("Overflow of ") + value + " for maximum at " + toString((long double)std::numeric_limits<short>::max()));
   if (value[0] == '-' && value > toString((long double)std::numeric_limits<short>::min()))
     throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((long double)std::numeric_limits<short>::min()));
   return new Operand<short>(value, Int16);
 }
 
 IOperand *	VirtualCPU::createInt32(const std::string & value) {
-  if (value[0] != '-' && value > toString((long double)std::numeric_limits<int>::max()))
-    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((long double)std::numeric_limits<int>::max()));
+  if (value[0] != '-' && fromString<size_t>(value) > (long double)std::numeric_limits<int>::max())
+    throw SyntaxException(std::string("Overflow of ") + value + " for maximum at " + toString((long double)std::numeric_limits<int>::max()));
   if (value[0] == '-' && value > toString((long double)std::numeric_limits<int>::min()))
     throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((long double)std::numeric_limits<int>::min()));
   return new Operand<int>(value, Int32);
@@ -373,18 +376,24 @@ IOperand *	VirtualCPU::createFloat(const std::string & value) {
   // std::cout << "max = " << max << std::endl;
   // std::cout << "Number of digits > 0 : " << value.find_first_of(".") << std::endl;
   // std::cout << "Max number of digits > 0 : " << max.substr(max.find_first_of("e") + 2) << std::endl;
-  if (value[0] != '-' && value.find_first_of(".") >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
-    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((long double)std::numeric_limits<float>::max()));
-  if (value[0] == '-' && value.substr(1).find_first_of(".") >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
-    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((long double)std::numeric_limits<float>::min()));
+  size_t len = value.find_first_of(".");
+  if (len == std::string::npos)
+    len = value.size();
+  if (value[0] != '-' && len >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
+    throw SyntaxException(std::string("Overflow of ") + value + " for maximum at " + toString((long double)std::numeric_limits<float>::max()));
+  if (value[0] == '-' && len - 1 >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
+    throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((long double)std::numeric_limits<float>::min()));
   return new Operand<float>(value, Float);
 }
 
 IOperand *	VirtualCPU::createDouble(const std::string & value) {
   std::string max = toString((long double)std::numeric_limits<double>::max());
-  if (value[0] != '-' && value.find_first_of(".") >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
-    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((long double)std::numeric_limits<double>::max()));
-  if (value[0] == '-' && value.substr(1).find_first_of(".") >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
-    throw SyntaxException(std::string("Overflow of ") + value + " for maxium at " + toString((long double)std::numeric_limits<double>::min()));
+  size_t len = value.find_first_of(".");
+  if (len == std::string::npos)
+    len = value.size();
+  if (value[0] != '-' && len >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
+    throw SyntaxException(std::string("Overflow of ") + value + " for maximum at " + toString((long double)std::numeric_limits<double>::max()));
+  if (value[0] == '-' && len - 1 >= fromString<size_t>(max.substr(max.find_first_of("e") + 2)))
+    throw SyntaxException(std::string("Overflow of ") + value + " for minimum at " + toString((long double)std::numeric_limits<double>::min()));
   return new Operand<double>(value, Double);
 }

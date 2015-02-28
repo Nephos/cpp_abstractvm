@@ -10,9 +10,13 @@ public:
   VMException(std::string str);
   virtual ~VMException() throw();
   const char *what() const throw();
+  void setLine(size_t line);
+  void setFile(std::string file);
 
 protected:
   std::string _str;
+  size_t _line;
+  std::string _file;
 };
 
 class ExitException : public VMException

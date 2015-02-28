@@ -1,0 +1,20 @@
+push int8(10)
+push int8(20)
+dump
+
+add
+dump
+
+push int8(10)
+sub
+dump
+
+push int8(2)
+mul
+dump
+
+push int8(4)
+div
+dump
+
+exit

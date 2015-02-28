@@ -7,6 +7,7 @@
 # include <map>
 # include <vector>
 # include <algorithm>
+# include <string>
 
 # include "VirtualCPU.hpp"
 # include "IOperand.hpp"
@@ -26,12 +27,14 @@ public:
   Chipset& operator=(const Chipset &);
 
   void		parse();
+  void		parse_debug();
   void		initIO(const std::string &);
   void		initIO();
-  int		executeLine(const std::string &);
+  int		executeLine(const std::string &, bool only_parse = false);
 
 private:
   std::istream *_is;
+  std::string _filename;
   VirtualCPU * _cpu;
 
   std::map<std::string, nb_arguments> _instructions;

@@ -1,0 +1,20 @@
+push float(1000000.0)
+push float(2000000.0)
+dump
+
+add
+dump
+
+push float(1000000.0)
+sub
+dump
+
+push float(2.0)
+mul
+dump
+
+push float(4.0)
+div
+dump
+
+exit
