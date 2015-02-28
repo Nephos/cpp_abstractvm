@@ -17,14 +17,22 @@ int	main(int argc, char **argv)
     {
       Chipset chipset(cpu);
       chipset.initIO();
+#ifdef DEBUG_MODE
+      chipset.parse_debug();
+#else
       chipset.parse();
+#endif
     }
   else
     for (int i = 1; i < argc; i++)
       {
 	Chipset chipset(cpu);
 	chipset.initIO(argv[i]);
-	chipset.parse();
+#ifdef DEBUG_MODE
+      chipset.parse_debug();
+#else
+      chipset.parse();
+#endif
       }
   return (0);
 }

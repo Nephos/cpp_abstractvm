@@ -27,9 +27,10 @@ public:
   Chipset& operator=(const Chipset &);
 
   void		parse();
+  void		parse_debug();
   void		initIO(const std::string &);
   void		initIO();
-  int		executeLine(const std::string &);
+  int		executeLine(const std::string &, bool only_parse = false);
 
 private:
   std::istream *_is;

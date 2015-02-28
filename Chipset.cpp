@@ -45,7 +45,7 @@ Chipset::~Chipset()
 Chipset::Chipset(const Chipset &) {
 }
 
-void		Chipset::parse()
+void		Chipset::parse_debug()
 {
   char buffer[BUFF_SIZE];
   int exited = 0;
@@ -67,18 +67,66 @@ void		Chipset::parse()
 #endif
     }
   }
-#ifdef DEBUG_MODE
   try {
-#endif
     if (!exited)
       throw NoExitException("Missing exit instruction");
+  }
+  catch (VMException &e) {
+    e.setFile(_filename);
 #ifdef DEBUG_MODE
-  }
-  catch (const VMException &e) {
     std::cout << e.what() << std::endl;
-  }
+#else
+    throw;
 #endif
+  }
 }
+
+void		Chipset::parse()
+{
+  char buffer[BUFF_SIZE];
+  int exited = 0;
+  size_t line = 0;
+  std::vector<std::string> exceptions;
+  std::vector<std::string> lines;
+  while (_is->getline(buffer, BUFF_SIZE)) {
+    line++;
+    lines.push_back(buffer);
+    if (_is == &std::cin && std::string(buffer).find(";;") == 0)
+      break;
+    try {
+      exited |= executeLine(buffer, true);
+    }
+    catch (VMException &e) {
+      e.setLine(line);
+      e.setFile(_filename);
+      exceptions.push_back(e.what());
+    }
+  }
+  try {
+    if (!exited)
+      throw NoExitException("Missing exit instruction");
+  }
+  catch (VMException &e) {
+    e.setFile(_filename);
+    exceptions.push_back(e.what());
+  }
+
+  std::vector<std::string>::iterator it;
+  std::vector<std::string>::iterator itend;
+  if (not exceptions.empty()) {
+      it = exceptions.begin();
+      itend = exceptions.end();
+      for (; it != itend; it++)
+	std::cerr << std::string(*it) << std::endl;
+    }
+  else {
+      it = lines.begin();
+      itend = lines.end();
+      for (; it != itend; it++)
+	executeLine((*it));
+    }
+}
+
 
 void		Chipset::initIO(const std::string& filename) {
   std::ifstream * ifs = new std::ifstream(filename.data());
@@ -93,7 +141,7 @@ void		Chipset::initIO() {
   _filename = "stdin";
 }
 
-int			Chipset::executeLine(const std::string & line)
+int			Chipset::executeLine(const std::string & line, bool only_parse)
 {
   std::stringstream	s;
   std::string		instruct;
@@ -160,5 +208,12 @@ int			Chipset::executeLine(const std::string & line)
   s >> str;
   if (!str.empty())
     throw SyntaxException(std::string("Too many arguments for ") + instruct + s.str());
-  return _cpu->executeInstruction(instruct, args_type, args_value);
+  if (only_parse == true)
+    {
+      if (instruct == "exit")
+	return 1;
+      return 0;
+    }
+  else
+    return _cpu->executeInstruction(instruct, args_type, args_value);
 }
