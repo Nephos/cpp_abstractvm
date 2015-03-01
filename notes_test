@@ -1,8 +1,0 @@
-push int32(42)
-assert double(42.00)
-
-ne fonctionne pas;
-
-   dump
-
-fonctionne
