@@ -82,7 +82,7 @@ public:
       return (rhs + *this);
     long double overflow = getValue<T>(*this);
     overflow += getValue<T>(rhs);
-    if (overflow > std::numeric_limits<T>::max() || overflow < std::numeric_limits<T>::min())
+    if (overflow > std::numeric_limits<T>::max() || overflow < -(std::numeric_limits<T>::max()) - 1)
       throw OverflowException("in addition");
     return new Operand<T>(getValue<T>(*this) + getValue<T>(rhs), _type);
   }
@@ -97,7 +97,7 @@ public:
       }
     long double overflow = getValue<T>(*this);
     overflow -= getValue<T>(rhs);
-    if (overflow > std::numeric_limits<T>::max() || overflow < std::numeric_limits<T>::min())
+    if (overflow > std::numeric_limits<T>::max() || overflow < -(std::numeric_limits<T>::max()) - 1)
       throw OverflowException("in substration");
     return new Operand<T>(getValue<T>(*this) - getValue<T>(rhs), _type);
   }
@@ -111,7 +111,7 @@ public:
     if (overflow == 0.0 && this->toString() != "0.0" && rhs.toString() != "0.0" &&
 	this->toString() != "0" && rhs.toString() != "0")
       throw UnderflowException("multiplication with non-zero value cannot return a zero");
-    if (overflow > std::numeric_limits<T>::max() || overflow < std::numeric_limits<T>::min())
+    if (overflow > std::numeric_limits<T>::max() || overflow < -(std::numeric_limits<T>::max()) - 1)
       throw OverflowException("in multiplication");
 
     return new Operand<T>(getValue<T>(*this) * getValue<T>(rhs), _type);
@@ -132,7 +132,7 @@ public:
     overflow /= getValue<T>(rhs);
     if (overflow == 0.0 && this->toString() != "0.0" && this->toString() != "0")
       throw UnderflowException("division of non-zero value cannot return a zero");
-    if (overflow > std::numeric_limits<T>::max() || overflow < std::numeric_limits<T>::min())
+    if (overflow > std::numeric_limits<T>::max() || overflow < -(std::numeric_limits<T>::max()) - 1)
       throw OverflowException("in division");
 
     return new Operand<T>(getValue<T>(*this) / getValue<T>(rhs), _type);
