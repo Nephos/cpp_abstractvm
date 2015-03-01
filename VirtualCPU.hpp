@@ -25,6 +25,8 @@ public:
   int          assert_lt(IOperand *);
   int          assert_get(IOperand *);
   int          assert_let(IOperand *);
+  int          assert_type(IOperand *);
+  int          assert_not_type(IOperand *);
   int          dump(IOperand *);
   int          add(IOperand *);
   int          sub(IOperand *);

@@ -11,6 +11,8 @@ VirtualCPU::VirtualCPU(MutantStack<IOperand *> * mutantStack) : _mutantStack(mut
   _ptr["assert_lt"] = (&VirtualCPU::assert_lt);
   _ptr["assert_get"] = (&VirtualCPU::assert_get);
   _ptr["assert_let"] = (&VirtualCPU::assert_let);
+  _ptr["assert_type"] = (&VirtualCPU::assert_type);
+  _ptr["assert_not_type"] = (&VirtualCPU::assert_not_type);
   _ptr["pop"] = (&VirtualCPU::pop);
   _ptr["dump"] = (&VirtualCPU::dump);
   _ptr["add"] = (&VirtualCPU::add);
@@ -37,8 +39,8 @@ int            VirtualCPU::push(IOperand *elem) {
 }
 
 int            VirtualCPU::assert(IOperand *elem) {
-  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
-  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  eOperandType accuracy = (elem->getPrecision() > top()->getPrecision() ? elem->getType() : top()->getType());
+  IOperand *first = createOperand(accuracy, top()->toString());
   IOperand *second = createOperand(accuracy, elem->toString());
   delete elem;
   if (first->toString() != second->toString())
@@ -59,8 +61,8 @@ int		VirtualCPU::assert_eq(IOperand *elem)
 }
 
 int            VirtualCPU::assert_not(IOperand *elem) {
-  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
-  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  eOperandType accuracy = (elem->getPrecision() > top()->getPrecision() ? elem->getType() : top()->getType());
+  IOperand *first = createOperand(accuracy, top()->toString());
   IOperand *second = createOperand(accuracy, elem->toString());
   delete elem;
   if (first->toString() == second->toString())
@@ -76,8 +78,8 @@ int            VirtualCPU::assert_not(IOperand *elem) {
 }
 
 int            VirtualCPU::assert_gt(IOperand *elem) {
-  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
-  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  eOperandType accuracy = (elem->getPrecision() > top()->getPrecision() ? elem->getType() : top()->getType());
+  IOperand *first = createOperand(accuracy, top()->toString());
   IOperand *second = createOperand(accuracy, elem->toString());
   delete elem;
   std::stringstream s1, s2;
@@ -99,8 +101,8 @@ int            VirtualCPU::assert_gt(IOperand *elem) {
 }
 
 int            VirtualCPU::assert_lt(IOperand *elem) {
-  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
-  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  eOperandType accuracy = (elem->getPrecision() > top()->getPrecision() ? elem->getType() : top()->getType());
+  IOperand *first = createOperand(accuracy, top()->toString());
   IOperand *second = createOperand(accuracy, elem->toString());
   delete elem;
   std::stringstream s1, s2;
@@ -122,8 +124,8 @@ int            VirtualCPU::assert_lt(IOperand *elem) {
 }
 
 int            VirtualCPU::assert_get(IOperand *elem) {
-  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
-  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  eOperandType accuracy = (elem->getPrecision() > top()->getPrecision() ? elem->getType() : top()->getType());
+  IOperand *first = createOperand(accuracy, top()->toString());
   IOperand *second = createOperand(accuracy, elem->toString());
   delete elem;
   std::stringstream s1, s2;
@@ -145,8 +147,8 @@ int            VirtualCPU::assert_get(IOperand *elem) {
 }
 
 int            VirtualCPU::assert_let(IOperand *elem) {
-  eOperandType accuracy = (elem->getPrecision() > _mutantStack->top()->getPrecision() ? elem->getType() : _mutantStack->top()->getType());
-  IOperand *first = createOperand(accuracy, _mutantStack->top()->toString());
+  eOperandType accuracy = (elem->getPrecision() > top()->getPrecision() ? elem->getType() : top()->getType());
+  IOperand *first = createOperand(accuracy, top()->toString());
   IOperand *second = createOperand(accuracy, elem->toString());
   delete elem;
   std::stringstream s1, s2;
@@ -158,6 +160,38 @@ int            VirtualCPU::assert_let(IOperand *elem) {
   if (d1 > d2)
     {
       std::string what = std::string("Comparaison LET between (") + first->toString() + ") and (" + second->toString() + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
+  return 0;
+}
+
+int            VirtualCPU::assert_type(IOperand *elem) {
+  IOperand *first = createOperand(top()->getType(), top()->toString());
+  IOperand *second = createOperand(elem->getType(), elem->toString());
+  delete elem;
+  if (first->getType() != second->getType())
+    {
+      std::string what = std::string("Comparaison TYPE between (") + toString(first->getType()) + ") and (" + toString(second->getType()) + ")";
+      delete first;
+      delete second;
+      throw AssertException(what);
+    }
+  delete first;
+  delete second;
+  return 0;
+}
+
+int            VirtualCPU::assert_not_type(IOperand *elem) {
+  IOperand *first = createOperand(top()->getType(), top()->toString());
+  IOperand *second = createOperand(elem->getType(), elem->toString());
+  delete elem;
+  if (first->getType() == second->getType())
+    {
+      std::string what = std::string("Comparaison NOT TYPE between (") + toString(first->getType()) + ") and (" + toString(second->getType()) + ")";
       delete first;
       delete second;
       throw AssertException(what);
@@ -218,7 +252,7 @@ int            VirtualCPU::add(__attribute__((unused)) IOperand *) {
   IOperand *result;
   try {
     result = *first + *second;
-    _mutantStack->push(result);
+    push(result);
   }
   catch  (const VMException &e) {
     delete first;
@@ -238,7 +272,7 @@ int            VirtualCPU::sub(__attribute__((unused)) IOperand *) {
   IOperand *result;
   try {
     result = *first - *second;
-    _mutantStack->push(result);
+    push(result);
   }
   catch  (const VMException &e) {
     delete first;
@@ -258,7 +292,7 @@ int            VirtualCPU::mul(__attribute__((unused)) IOperand *) {
   IOperand *result;
   try {
     result = *first * *second;
-    _mutantStack->push(result);
+    push(result);
   }
   catch  (const VMException &e) {
     delete first;
@@ -278,7 +312,7 @@ int            VirtualCPU::div(__attribute__((unused)) IOperand *) {
   IOperand *result;
   try {
     result = *first / *second;
-    _mutantStack->push(result);
+    push(result);
   }
   catch  (const VMException &e) {
     delete first;
@@ -298,7 +332,7 @@ int            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
   IOperand *result;
   try {
     result = *first % *second;
-    _mutantStack->push(result);
+    push(result);
   }
   catch  (const VMException &e) {
     delete first;
@@ -311,11 +345,11 @@ int            VirtualCPU::mod(__attribute__((unused)) IOperand *) {
 }
 
 int            VirtualCPU::print(__attribute__((unused)) IOperand *) {
-  if (_mutantStack->top()->getType() != Int8)
+  if (top()->getType() != Int8)
     throw VMException("You cannot \"print\" a non-int8");
   std::stringstream ss;
   int i;
-  ss << _mutantStack->top()->toString();
+  ss << top()->toString();
   ss >> i;
   char c = i;
   std::cout << c;
