@@ -29,9 +29,4 @@ div
 ; 4
 assert double(4.0)
 
-push double(2.0)
-; 2 , 4
-mod
-assert double(0.0)
-
 exit
