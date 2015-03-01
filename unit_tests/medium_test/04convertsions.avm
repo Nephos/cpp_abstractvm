@@ -1,0 +1,26 @@
+push int8(1)
+push int16(1)
+add
+push int32(1)
+push float(1.0)
+add
+push double(1.0)
+push int8(100)
+add
+push int16(100)
+push int32(100)
+add
+push float(100.0)
+push double(100.0)
+add
+dump
+
+add
+add
+add
+add
+dump
+assert float(505.0)
+assert double(505.0)
+
+exit
