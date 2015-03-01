@@ -62,11 +62,7 @@ void		Chipset::parse_debug()
     catch (VMException &e) {
       e.setLine(line);
       e.setFile(_filename);
-#ifdef DEBUG_MODE
       std::cout << e.what() << std::endl;
-#else
-      throw;
-#endif
     }
   }
   try {
@@ -75,11 +71,7 @@ void		Chipset::parse_debug()
   }
   catch (VMException &e) {
     e.setFile(_filename);
-#ifdef DEBUG_MODE
     std::cout << e.what() << std::endl;
-#else
-    throw;
-#endif
   }
 }
 

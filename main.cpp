@@ -13,26 +13,31 @@ int	main(int argc, char **argv)
   MutantStack<IOperand *> mutantStack;
   VirtualCPU *cpu = new VirtualCPU(&mutantStack);
 
-  if (argc == 1)
-    {
-      Chipset chipset(cpu);
-      chipset.initIO();
-#ifdef DEBUG_MODE
-      chipset.parse_debug();
-#else
-      chipset.parse();
-#endif
-    }
-  else
-    for (int i = 1; i < argc; i++)
+  try {
+    if (argc == 1)
       {
 	Chipset chipset(cpu);
-	chipset.initIO(argv[i]);
+	chipset.initIO();
 #ifdef DEBUG_MODE
-      chipset.parse_debug();
+	chipset.parse_debug();
 #else
-      chipset.parse();
+	chipset.parse();
 #endif
       }
+    else
+      for (int i = 1; i < argc; i++)
+	{
+	  Chipset chipset(cpu);
+	  chipset.initIO(argv[i]);
+#ifdef DEBUG_MODE
+	  chipset.parse_debug();
+#else
+	  chipset.parse();
+#endif
+	}
+  }
+  catch (VMException &e) {
+    std::cout << e.what() << std::endl;
+  }
   return (0);
 }
