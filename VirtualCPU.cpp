@@ -86,7 +86,7 @@ int            VirtualCPU::assert_gt(IOperand *elem) {
   s1 >> d1;
   s2 << second->toString();
   s2 >> d2;
-  if (d1 < d2)
+  if (d1 <= d2)
     {
       std::string what = std::string("Comparaison GT between (") + first->toString() + ") and (" + second->toString() + ")";
       delete first;
@@ -109,7 +109,7 @@ int            VirtualCPU::assert_lt(IOperand *elem) {
   s1 >> d1;
   s2 << second->toString();
   s2 >> d2;
-  if (d1 > d2)
+  if (d1 >= d2)
     {
       std::string what = std::string("Comparaison LT between (") + first->toString() + ") and (" + second->toString() + ")";
       delete first;
@@ -132,7 +132,7 @@ int            VirtualCPU::assert_get(IOperand *elem) {
   s1 >> d1;
   s2 << second->toString();
   s2 >> d2;
-  if (d1 <= d2)
+  if (d1 < d2)
     {
       std::string what = std::string("Comparaison GET between (") + first->toString() + ") and (" + second->toString() + ")";
       delete first;
@@ -155,7 +155,7 @@ int            VirtualCPU::assert_let(IOperand *elem) {
   s1 >> d1;
   s2 << second->toString();
   s2 >> d2;
-  if (d1 >= d2)
+  if (d1 > d2)
     {
       std::string what = std::string("Comparaison LET between (") + first->toString() + ") and (" + second->toString() + ")";
       delete first;

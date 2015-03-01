@@ -1,0 +1,37 @@
+push double(10.0)
+push double(10.0)
+push double(10.0)
+mul
+assert double(100.0)
+; 100 , 10
+
+push double(100.0)
+assert double(100.0)
+; 100, 100, 10
+
+dump
+sub
+dump
+assert double(0.0)
+; 0, 10
+
+add
+assert double(10.0)
+; 10
+
+push double(2.0)
+mul
+; 20
+
+push double(5.0)
+; 5 , 20
+div
+; 4
+assert double(4.0)
+
+push double(2.0)
+; 2 , 4
+mod
+assert double(0.0)
+
+exit

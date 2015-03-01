@@ -1,0 +1,12 @@
+push int8(1)
+push int16(1)
+push int32(1)
+push float(1.0)
+push double(1.0)
+push int8(-100)
+push int16(-100)
+push int32(-100)
+push float(-100.0)
+push double(-100.0)
+
+exit

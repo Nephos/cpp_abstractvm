@@ -1,0 +1,35 @@
+push int32(10)
+push int32(10)
+push int32(10)
+mul
+assert int32(100)
+; 100 , 10
+
+push int32(100)
+assert int32(100)
+; 100, 100, 10
+
+sub
+assert int32(0)
+; 0, 10
+
+add
+assert int32(10)
+; 10
+
+push int32(2)
+mul
+; 20
+
+push int32(5)
+; 5 , 20
+div
+; 4
+assert int32(4)
+
+push int32(2)
+; 2 , 4
+mod
+assert int32(0)
+
+exit

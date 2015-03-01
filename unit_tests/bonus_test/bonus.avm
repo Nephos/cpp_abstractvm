@@ -1,0 +1,12 @@
+push double(0.0)
+assert double(0.0)
+assert_eq double(0.0)
+assert_not double(1.0)
+assert_not double(-1.0)
+assert_gt double(-1.0)
+assert_get double(-1.0)
+assert_get double(0.0)
+assert_lt double(1.0)
+assert_let double(1.0)
+assert_let double(0.0)
+exit
