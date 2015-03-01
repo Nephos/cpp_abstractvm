@@ -1,3 +1,0 @@
-push int8(42)
-push int32(32)
-dump
